@@ -5,6 +5,7 @@ const Admin = require('../../Models/Admin/admin')
 const Error = require("../../Utils/ErrorHandler/ErrorHandler");
 const CatchAsyncHandler = require('../../Middleware/Error/CatchAsyncHandler')
 const createSendToken = require("../../suscribers/createSendToken");
+const Category =require('../../Models/category/category')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const FactoryHandler =require('../../FactoryHandler/factoryhandler')
 
@@ -51,6 +52,15 @@ exports.login = async (req, res, next) => {
 
 
 exports.update_password =FactoryHandler.UpdatePasswordHandler(Admin)
+
+
+
+//Category Handler
+exports.addcategory=FactoryHandler.Add(Category)
+exports.getallcategory=FactoryHandler.getAll(Category)
+exports.editcategory=FactoryHandler.updateOne(Category)
+exports.updatestatus=FactoryHandler.updateOne(Category)
+exports.getcategory=FactoryHandler.getOne(Category)
 
 
 
