@@ -40,6 +40,9 @@ const CompanySchema =new mongoose.Schema({
       GSTIN:{
           type:String
     },
+    address:{
+      type:String,
+    },
     description:{
         type:String,
         minLength: 2,
