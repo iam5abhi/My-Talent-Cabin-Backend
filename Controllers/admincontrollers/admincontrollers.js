@@ -9,7 +9,9 @@ const Category =require('../../Models/category/category')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const FactoryHandler =require('../../FactoryHandler/factoryhandler')
 const SubCategory =require('../../Models/category/subcategory')
-const Internships =require('../../models/Internship/Internship')
+const Internships =require('../../Models/Internship/Internship')
+const User =require('../../Models/User/UserShema')
+const Company =require('../../Models/Company/CompanySchema')
 
 
 exports.signup = async (req, res, next) => {
@@ -98,6 +100,13 @@ exports.UpdateSubCategory  =async(req,res,next)=>{
 }
 
 
+exports.UpdateSubCategoryStatus  =async(req,res,next)=>{
+    const data = await SubCategory.updateOne({_id:req.params.id},{$set:{status:req.body.status}})
+    if(!data) return next(new Error('no added',500))
+   res.status(201).send(data)
+  }
+  
+
 
 
 exports.AddInternships =async(req,res,next)=>{
@@ -155,6 +164,63 @@ exports.UpdateInertshipStaus=async(req,res,next)=>{
 }
 
 
+
+exports.CreateUser =async(req,res,next)=>{
+    const userdata=await User.create({
+        name:req.body.name,
+        email:req.body.email,
+        PhoneNumber:req.body.phoneNumber,
+        location:req.body.location,
+        language:req.body.language,
+        education:req.body.education,
+        skills:req.body.skills,
+        experience:req.body.experience,
+        bio:req.body.bio,
+        Certification:req.body.certification,
+        password:`${req.body.name}@123`,
+        confirmPassword:`${req.body.name}@123`,
+    })
+  if(!userdata)return next(new Error('User not be created',500))
+  res.status(201).send(userdata)
+}
+
+
+exports.GetAllUser =FactoryHandler.getAll(User)
+exports.GetOneUser =FactoryHandler.getOne(User)
+exports.updateUser =FactoryHandler.updateOne(User)
+exports.UpdateUserStatus =FactoryHandler.updateOne(User)
+
+
+
+//Create Company
+
+exports.CreateCompany =async(req,res,next)=>{
+   const companyData =await Company.create({
+    name:req.body.name,
+    email:req.body.email,
+    PhoneNumber:req.body.phoneNumber,
+    location:req.body.location,
+    GSTIN:req.body.gstIn,
+    language:req.body.language,
+    description:req.body.description,
+    bio:req.body.bio,
+    video_url:req.body.video_url,
+    linkedin_url:req.body.linkedin_url,
+    hr:req.body.hr,
+    password:`${req.body.name}@123`,
+    confirmPassword:`${req.body.name}@123`,
+   })
+   if(!companyData)return next(new Error('User not be created',500))
+  res.status(201).send(companyData)
+}
+
+
+
+
+exports.GetAllCompany =FactoryHandler.getAll(Company)
+exports.GetOneCompany =FactoryHandler.getOne(Company)
+exports.updateCompany=FactoryHandler.updateOne(Company)
+exports.UpdateCompanyStatus =FactoryHandler.updateOne(Company)
 
 
 

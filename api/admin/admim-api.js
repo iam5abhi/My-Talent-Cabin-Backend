@@ -16,6 +16,35 @@ adminrouter.route('/category/:id').get(admincontroller.getcategory).patch(adminc
 adminrouter.route('/category-status/:id').patch(admincontroller.updatestatus)
 
 
+adminrouter.route('/subcategory').post(admincontroller.AddSubCategory).get(admincontroller.GetAllSubCategory)
+adminrouter.route('/subcategory/:id').get(admincontroller.GetOneSubCategory).patch(admincontroller.UpdateSubCategory)
+adminrouter.route('/subcategory-status/:id').patch(admincontroller.UpdateSubCategoryStatus)
+
+
+
+adminrouter.route('/intership').post(admincontroller.AddInternships).get(admincontroller.GetAllInternships)
+adminrouter.route('/intership/:id').get(admincontroller.GetOneInternships).patch(admincontroller.updateIntership)
+adminrouter.route('/intership-status/:id').patch(admincontroller.UpdateInertshipStaus)
+
+
+
+
+adminrouter.route('/user').post(admincontroller.CreateUser).get(admincontroller.GetAllUser)
+adminrouter.route('/user/:id').get(admincontroller.GetOneUser).patch(admincontroller.updateUser)
+adminrouter.route('/user-status/:id').patch(admincontroller.UpdateUserStatus)
+
+
+
+
+
+adminrouter.route('/company').post(admincontroller.CreateUser).get(admincontroller.GetAllCompany)
+adminrouter.route('/company/:id').get(admincontroller.GetOneCompany).patch(admincontroller.updateCompany)
+adminrouter.route('/company-status/:id').patch(admincontroller.UpdateCompanyStatus)
+
+
+
+
+
 
 
 
