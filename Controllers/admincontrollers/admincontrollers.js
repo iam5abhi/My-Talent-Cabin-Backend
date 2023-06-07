@@ -8,6 +8,8 @@ const createSendToken = require("../../suscribers/createSendToken");
 const Category =require('../../Models/category/category')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const FactoryHandler =require('../../FactoryHandler/factoryhandler')
+const SubCategory =require('../../Models/category/subcategory')
+const Internships =require('../../models/Internship/Internship')
 
 
 exports.signup = async (req, res, next) => {
@@ -62,6 +64,95 @@ exports.editcategory=FactoryHandler.updateOne(Category)
 exports.updatestatus=FactoryHandler.updateOne(Category)
 exports.getcategory=FactoryHandler.getOne(Category)
 
+
+
+exports.AddSubCategory =async(req,res,next)=>{
+    const data =await SubCategory.create({
+        categoryId:req.body.categoryId,
+        name:req.body.name
+    })
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+}
+
+
+
+exports.GetAllSubCategory =async(req,res,next)=>{
+  const data =await SubCategory.find({})
+  if(!data) return next(new Error('no added',500))
+  res.status(201).send(data)
+}
+
+
+exports.GetOneSubCategory = async(req,res,next)=>{
+  const data =await SubCategory.find({categoryId:req.params.id})
+  if(!data) return next(new Error('no added',500))
+  res.status(201).send(data)
+}
+
+
+exports.UpdateSubCategory  =async(req,res,next)=>{
+  const data = await SubCategory.updateOne({_id:req.params.id},{$set:{name:req.body.name}})
+  if(!data) return next(new Error('no added',500))
+ res.status(201).send(data)
+}
+
+
+
+
+exports.AddInternships =async(req,res,next)=>{
+    const data = await Internships.create({
+        CompanyId:req.body.CompanyId,
+        title:req.body.title,
+        description:req.body.description,
+        intershipWeek:req.body.intershipWeek,
+        intershipType:req.body.intershipType,
+        price:req.body.price,
+        tags:req.body.tags
+    })
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  exports.GetAllInternships  =async(req,res,next)=>{
+    const data = await Internships.find({})
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  exports.GetOneInternships =async(req,res,next)=>{
+    const data = await Internships.findOne({_id:req.params.id})
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  
+  exports.updateIntership =async(req,res,next)=>{
+   const updatedData={
+    title:req.body.title,
+    description:req.body.description,
+    intershipWeek:req.body.intershipWeek,
+    intershipType:req.body.intershipType,
+    price:req.body.price,
+    tags:req.body.tags
+   }
+   const data =await Internships.updateOne({_id:req.params.id},{$set:updatedData})
+   if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  
+  
+  
+exports.UpdateInertshipStaus=async(req,res,next)=>{
+  const data =await Internships.updateOne({_id:req.params.id},{$set:{status:req.body.status}})
+  if(!data) return next(new Error('no added',500))
+   res.status(201).send(data)
+}
 
 
 
