@@ -194,8 +194,8 @@ exports.CreateCompany =async(req,res,next)=>{
     PhoneNumber:req.body.phoneNumber,
     location:req.body.location,
     address:req.body.address,
-    password:`${req.body.name}@123`,
-    confirmPassword:`${req.body.name}@123`,
+    password:`${req.body.name.replace(/\s/g, "")}@123`,
+    confirmPassword:`${req.body.name.replace(/\s/g, "")}@123`,
    })
    if(!companyData)return next(new Error('User not be created',500))
   res.status(201).send(companyData)
