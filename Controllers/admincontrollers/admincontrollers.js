@@ -170,13 +170,6 @@ exports.CreateUser =async(req,res,next)=>{
         name:req.body.name,
         email:req.body.email,
         PhoneNumber:req.body.phoneNumber,
-        location:req.body.location,
-        language:req.body.language,
-        education:req.body.education,
-        skills:req.body.skills,
-        experience:req.body.experience,
-        bio:req.body.bio,
-        Certification:req.body.certification,
         password:`${req.body.name}@123`,
         confirmPassword:`${req.body.name}@123`,
     })
