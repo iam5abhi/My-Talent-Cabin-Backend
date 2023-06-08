@@ -37,7 +37,7 @@ adminrouter.route('/user-status/:id').patch(admincontroller.UpdateUserStatus)
 
 
 
-adminrouter.route('/company').post(admincontroller.CreateUser).get(admincontroller.GetAllCompany)
+adminrouter.route('/company').post(admincontroller.CreateCompany).get(admincontroller.GetAllCompany)
 adminrouter.route('/company/:id').get(admincontroller.GetOneCompany).patch(admincontroller.updateCompany)
 adminrouter.route('/company-status/:id').patch(admincontroller.UpdateCompanyStatus)
 
