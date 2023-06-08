@@ -19,6 +19,7 @@ adminrouter.route('/category-status/:id').patch(admincontroller.updatestatus)
 adminrouter.route('/subcategory').post(admincontroller.AddSubCategory).get(admincontroller.GetAllSubCategory)
 adminrouter.route('/subcategory/:id').get(admincontroller.GetOneSubCategory).patch(admincontroller.UpdateSubCategory)
 adminrouter.route('/subcategory-status/:id').patch(admincontroller.UpdateSubCategoryStatus)
+adminrouter.route('/subcategory-data').get(admincontroller.getallSubcategories)
 
 
 

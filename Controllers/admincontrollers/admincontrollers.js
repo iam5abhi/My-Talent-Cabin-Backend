@@ -105,8 +105,8 @@ exports.UpdateSubCategoryStatus  =async(req,res,next)=>{
     if(!data) return next(new Error('no added',500))
    res.status(201).send(data)
   }
-  
-
+ 
+exports.getallSubcategories=FactoryHandler.getAll(SubCategory)
 
 
 exports.AddInternships =async(req,res,next)=>{
