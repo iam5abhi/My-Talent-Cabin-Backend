@@ -79,14 +79,14 @@ exports.AddSubCategory =async(req,res,next)=>{
 
 
 
-exports.GetAllSubCategory =async(req,res,next)=>{
-  const data =await SubCategory.find({})
+exports.GetOneSubCategory =async(req,res,next)=>{
+  const data =await SubCategory.findOne({_id:req.params.id})
   if(!data) return next(new Error('no added',500))
   res.status(201).send(data)
 }
 
 
-exports.GetOneSubCategory = async(req,res,next)=>{
+exports.GetAllSubCategory = async(req,res,next)=>{
   const data =await SubCategory.find({categoryId:req.params.id})
   if(!data) return next(new Error('no added',500))
   res.status(201).send(data)
