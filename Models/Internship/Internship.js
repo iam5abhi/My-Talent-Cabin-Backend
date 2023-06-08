@@ -34,7 +34,6 @@ const InternshipSchema = new mongoose.Schema(
         _id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: Subcategory,
-          required: true,
         },
       },
     ],
