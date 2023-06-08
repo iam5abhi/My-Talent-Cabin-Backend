@@ -172,6 +172,7 @@ exports.CreateUser =async(req,res,next)=>{
         PhoneNumber:req.body.phoneNumber,
         password:`${req.body.name}@123`,
         confirmPassword:`${req.body.name}@123`,
+        status:'active'
     })
   if(!userdata)return next(new Error('User not be created',500))
   res.status(201).send(userdata)
