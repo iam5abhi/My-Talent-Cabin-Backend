@@ -100,8 +100,8 @@ const UserSchema = new mongoose.Schema(
    status:{
      type:String,
      required:true,
-     enum:['pending','onload','created','terminate'],
-     default:'onload'
+     enum:['active','deactive','onhold','terminate'],
+     default:'onhold'
    }
  },
  
