@@ -35,7 +35,6 @@ const CompanySchema =new mongoose.Schema({
       
       location:{
         type:String,
-        required:true
       },  
       GSTIN:{
           type:String
@@ -72,7 +71,6 @@ const CompanySchema =new mongoose.Schema({
             },
             name:{
                 type: String,
-                required: true,
                 lowercase: true,
                 trim: true,   
                 minLength: 2,
