@@ -125,14 +125,14 @@ exports.AddInternships =async(req,res,next)=>{
   
   
   exports.GetAllInternships  =async(req,res,next)=>{
-    const data = await Internships.find({})
+    const data = await Internships.find({}).populate('tags._id').populate('CompanyId')
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
   }
   
   
   exports.GetOneInternships =async(req,res,next)=>{
-    const data = await Internships.findOne({_id:req.params.id})
+    const data = await Internships.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId')
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
   }
