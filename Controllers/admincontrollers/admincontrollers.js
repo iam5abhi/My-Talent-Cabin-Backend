@@ -87,7 +87,7 @@ exports.GetOneSubCategory =async(req,res,next)=>{
 
 
 exports.GetAllSubCategory = async(req,res,next)=>{
-  const data =await SubCategory.find({categoryId:req.params.id})
+  const data =await SubCategory.find({categoryId:req.body.id})
   if(!data) return next(new Error('no added',500))
   res.status(201).send(data)
 }
