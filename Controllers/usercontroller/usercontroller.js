@@ -30,9 +30,6 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        const password = base64.decode(req.body.password);
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) return res.status(422).send({ errors: errors.array() });
 
         const user = await User.findOne({ email: req.body.email }, {createdAt: 0 })
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
