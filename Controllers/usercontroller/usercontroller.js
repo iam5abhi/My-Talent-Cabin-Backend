@@ -5,11 +5,11 @@ exports.signup = async (req, res, next) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(422).send({ errors: errors.array() });
-        const { username, email, password, confirmPassword,PhoneNumber} = req.body;
+        const { name, email, password, confirmPassword,PhoneNumber} = req.body;
         if (base64.decode(password) !== base64.decode(confirmPassword)) return next(new Error(PASSWORD_NOT_MATCH, 400));
-        const existingAdmin = await Admin.findOne({ email });
+        const existingAdmin = await User.findOne({ email });
         if (existingAdmin) return next(new Error(USER_ALREADY_EXIST, 400));
-        const newUser = new User({ username, email,PhoneNumber, password:base64.decode(password), confirmPassword:base64.decode(confirmPassword)});
+        const newUser = new User({ name, email,PhoneNumber, password:base64.decode(password), confirmPassword:base64.decode(confirmPassword)});
         const savedUser = await newUser.save();
         res.status(200).send({
             message: REGISTRATION_SUCCESS,
