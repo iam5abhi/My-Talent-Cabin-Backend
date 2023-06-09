@@ -1,5 +1,6 @@
 const User =require('../../Models/User/UserShema')
 const FactoryHandler =require('../../FactoryHandler/factoryhandler')
+const base64 = require("base-64");
 
 exports.signup = async (req, res, next) => {
     try {
