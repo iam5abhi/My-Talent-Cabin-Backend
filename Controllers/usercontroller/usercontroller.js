@@ -32,7 +32,8 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const password = base64.decode(req.body.password);
-        const user = await User.findOne({ email: req.body.email }, {createdAt: 0 })
+        const user = await User.findOne({$and:[
+            {email: req.body.email },{status:'active'}]}, {createdAt: 0 })
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
         const isMatch = await user.comparepassword(password);
         if (!isMatch) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
