@@ -5,7 +5,7 @@ const isAuthenticated =require('../../Middleware/isAuthenticated/isAuthenticated
 
 
 studentrouter.route('/signup').post(studentcontroller.signup)
-adminrouter.route('/login').post(studentcontroller.login)
+studentrouter.route('/login').post(studentcontroller.login)
 
 studentrouter.use(isAuthenticated)
 
