@@ -11,6 +11,12 @@ studentrouter.use(isAuthenticated)
 
 studentrouter.route('/change-password').patch(studentcontroller.update_password)
 
+studentrouter.route('/').get(studentcontroller.getprofile)
+studentrouter.route('/skill').get(studentcontroller.getAllSubCategory)
+
+
+
+
 
 
 

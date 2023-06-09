@@ -1,8 +1,10 @@
 const User =require('../../Models/User/UserShema')
 const FactoryHandler =require('../../FactoryHandler/factoryhandler')
 const base64 = require("base-64");
+const mongoose =require('mongoose')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const createSendToken = require("../../suscribers/createSendToken");
+const SubCategory =require('../../Models/category/subcategory')
 
 
 
@@ -47,6 +49,38 @@ exports.login = async (req, res, next) => {
 
 
 exports.update_password =FactoryHandler.UpdatePasswordHandler(User)
+
+
+
+exports.getprofile =(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    User.aggregate([
+        {
+            $match:{
+                _id:ObjectID(req.data.user._id)
+            }
+        }
+    ])
+    .exec((err, result) => {
+        if (err) {
+            next(new Error(`${err.message}`, 500))
+        } else {
+           res.status(200).send(result)
+    }});
+}
+
+
+
+
+exports.getAllSubCategory =async(req,res,next)=>{
+    const subcategory =await SubCategory.find({})
+    if(!subcategory) return next(new Error('no data is avaible'))
+    res.status(200).send()
+}
+
+
+
+
 
 
 
