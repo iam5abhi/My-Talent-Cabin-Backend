@@ -81,6 +81,37 @@ exports.getAllSubCategory =async(req,res,next)=>{
 
 
 
+exports.addloaction =async(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    User.aggregate([
+        {
+            $match:{
+                _id:ObjectID(req.data.user._id)
+            }
+        },
+        {
+            $set:{
+                location:req.body.location
+            }
+        },
+        {
+            $merge: {
+                into: 'users',
+                on: '_id',
+                whenMatched: 'replace',
+                whenNotMatched: 'insert'
+            }
+        }
+    ]).exec((err, result) => {
+            if (err) 
+            {
+                next(new Error(`${err.message}`, 500))
+            }else{
+            res.status(200).send(result)
+            }
+    })
+}
+
 
 
 
