@@ -5,6 +5,7 @@ const Error=require('./Utils/ErrorHandler/ErrorHandler')
 const GloBalErrorHandler =require('./Middleware/Error/Error')
 
 const admin =require('./api/admin/admim-api')
+const student =require('./api/student/student-api')
 
 
 
@@ -35,6 +36,7 @@ app.use(function(req, res, next) {
 
 // Hand The employee-routes
 app.use('/admin',admin)
+app.use('/student',student)
 
 
 

@@ -19,7 +19,7 @@ exports.signup = async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(422).send({ errors: errors.array() });
         const { username, email, password, confirmPassword } = req.body;
-        console.log(username, email, password, confirmPassword)
+  
         if (base64.decode(password) !== base64.decode(confirmPassword)) return next(new Error(PASSWORD_NOT_MATCH, 400));
         const existingAdmin = await Admin.findOne({ email });
         if (existingAdmin) return next(new Error(USER_ALREADY_EXIST, 400));
