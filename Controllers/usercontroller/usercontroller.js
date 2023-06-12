@@ -69,6 +69,19 @@ exports.getprofile =(req,res,next)=>{
                 foreignField:"_id",
                 as:'myskill'
             }
+        },
+        {
+            $project:{
+                skills:0,
+                password:0,
+                confirmPassword:0,
+                isAccountVerified:0,
+                accountCreated:0,
+                status:0,
+                createdAt:0,
+                updatedAt:0
+                
+            }
         }
     ])
     .exec((err, result) => {
