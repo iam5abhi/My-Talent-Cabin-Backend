@@ -125,8 +125,8 @@ exports.addLanguage =async(req,res,next)=>{
             }
         },
         {
-            $set: {
-                language: req.body.language
+            $addToSet: {
+                language: {$each:req.body.language}
               }
         },
         {
@@ -209,10 +209,8 @@ exports.addSkills =async(req,res,next)=>{
   User.aggregate([
     { $match: { email: req.data.email } },
     {
-        $set: {
-            skills: {
-              $setUnion: ['$skills', req.body.ski]
-            }
+        $addToSet: {
+            skills: {$each:req.body.skills}
           }
     }
   ])
