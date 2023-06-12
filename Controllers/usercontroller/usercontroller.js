@@ -254,7 +254,7 @@ User.updateOne(
 exports.removeSkill =async(req,res,next)=>{
     User.updateOne(
         { email: req.data.user.email },
-        { $pull: { skills: req.body.value } }
+        { $pull: { skills: { $eq: req.body.value } } }
       )
       .then(() => {
         res.status(200).send({ message: "Element removed successfully" });
