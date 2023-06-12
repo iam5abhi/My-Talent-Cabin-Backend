@@ -263,3 +263,16 @@ exports.removeSkill =async(req,res,next)=>{
         next(new Error(`${err.message}`, 500));
       });
 }
+
+exports.removeLanguage =async(req,res,next)=>{
+    User.updateOne(
+        { email: req.data.user.email },
+        { $pull: { language: { $eq: req.body.value } } }
+      )
+      .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
+}
