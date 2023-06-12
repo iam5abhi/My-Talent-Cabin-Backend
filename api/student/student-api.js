@@ -26,10 +26,4 @@ studentrouter.route('/add-exp').patch(studentcontroller.addExprince)
 
 
 
-
-
-
-
-
-
 module.exports =studentrouter

@@ -177,7 +177,7 @@ exports.addEducation =async(req,res,next)=>{
         { $push: { education:  req.body.education } }
     )
     .then(() => {
-        res.status(200).send({ message: "Skills added successfully" });
+        res.status(200).send({ message: "education added successfully" });
     })
     .catch((err) => {
         next(new Error(`${err.message}`, 500));
@@ -236,31 +236,16 @@ exports.addSkills =async(req,res,next)=>{
 
 
 
-exports.addExprince =async(req,res,next)=>{
-    User.aggregate([
-        {
-            $match:{email:req.data.user.email}
-        },
-        {
-           $push:{
-            experience:req.body.experience
-           }
-        },
-        {
-            $merge: {
-                into: 'users',
-                on: '_id',
-                whenMatched: 'replace',
-                whenNotMatched: 'insert'
-            }
-        }
-    ]).exec((err, result) => {
-        if (err) 
-        {
-            next(new Error(`${err.message}`, 500))
-        }else{
-        res.status(200).send({message:"bio added Sucessfully"})
-        }
+exports.addExprince =async(req,res,next)=>{   
+User.updateOne(
+    { email: req.data.user.email },
+    { $push: { experience:  req.body.experience } }
+)
+.then(() => {
+    res.status(200).send({ message: "education added successfully" });
 })
+.catch((err) => {
+    next(new Error(`${err.message}`, 500));
+});    
 }
 
