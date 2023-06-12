@@ -153,9 +153,11 @@ exports.addEducation =async(req,res,next)=>{
     User.aggregate([
         {$match: { email: req.data.user.email } },
         {
-            $addFields: {
-              education: { $push: req.body.education }
-            }
+            $set: {
+                language: {
+                  $setUnion: ['$language', req.body.language]
+                }
+              }
         },
       ]).exec((err) => {
         if (err) {
@@ -211,7 +213,7 @@ exports.addSkills =async(req,res,next)=>{
     {
         $set: {
             skills: {
-              $setUnion: ['$skills', skills]
+              $setUnion: ['$skills', req.body.skills]
             }
           }
     }
