@@ -281,7 +281,7 @@ exports.removeLanguage =async(req,res,next)=>{
 exports.removeEducation =async(req,res,next)=>{
     User.updateOne(
         { email: req.data.user.email },
-        { $pull: { education: { $eq: req.body._id } } }
+        { $pull: { education: {_id:req.body._id } } }
     )
     .then(() => {
         res.status(200).send({ message: "Element removed successfully" });
@@ -296,7 +296,7 @@ exports.removeEducation =async(req,res,next)=>{
 exports.removeExprience =async(req,res,next)=>{
     User.updateOne(
         { email: req.data.user.email },
-        { $pull: { experience: { $eq: req.body._id } } }
+        { $pull: { experience: {_id:req.body._id} } }
     )
     .then(() => {
         res.status(200).send({ message: "Element removed successfully" });
