@@ -149,4 +149,79 @@ exports.addLanguage =async(req,res,next)=>{
 
 
 
+exports.addEducation =async(req,res,next)=>{
+    User.aggregate([
+        {$match: { email: req.data.user.email } },
+        {
+            $addFields: {
+              education: { $push: req.body.education }
+            }
+        },
+      ]).exec((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.status(200).json({
+          message: "Education data added successfully"
+        });
+      });
+      
+}
 
+
+
+
+
+exports.addBio =async(req,res,next)=>{
+
+    User.aggregate([
+        {
+            $match:{
+                email:ObjectID(req.data.user.email)
+            }
+        },
+        {
+            $set:{
+                bio:req.body.bio
+            }
+        },
+        {
+            $merge: {
+                into: 'users',
+                on: '_id',
+                whenMatched: 'replace',
+                whenNotMatched: 'insert'
+            }
+        }
+    ]).exec((err, result) => {
+            if (err) 
+            {
+                next(new Error(`${err.message}`, 500))
+            }else{
+            res.status(200).send({message:"bio added Sucessfully"})
+            }
+    })
+}
+
+
+
+exports.addSkills =async(req,res,next)=>{
+  User.aggregate([
+    { $match: { email: req.data.email } },
+    {
+        $set: {
+            skills: {
+              $setUnion: ['$skills', skills]
+            }
+          }
+    }
+  ])
+  .exec((err, result) => {
+    if (err) 
+    {
+        next(new Error(`${err.message}`, 500))
+    }else{
+    res.status(200).send({message:"Skill added Sucessfully"})
+    }
+})
+}
