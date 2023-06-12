@@ -227,24 +227,16 @@ exports.addBio =async(req,res,next)=>{
 
 
 exports.addSkills =async(req,res,next)=>{
-  User.aggregate([
-    { $match: { email: req.data.email } },
-    {
-        $set: {
-          skills: {
-            $setUnion: ["$skills", req.body.skills]
-          }
-        }
-      }
-  ])
-  .exec((err, result) => {
-    if (err) 
-    {
-        next(new Error(`${err.message}`, 500))
-    }else{
-    res.status(200).send({message:"Skill added Sucessfully"})
-    }
-})
+    User.updateOne(
+        { email: req.data.user.email },
+        { $addToSet: { skills: { $each: req.body.skills } } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "Skills added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    });
 }
 
 
