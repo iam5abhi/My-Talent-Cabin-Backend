@@ -171,22 +171,16 @@ exports.addLanguage =async(req,res,next)=>{
 
 
 exports.addEducation =async(req,res,next)=>{
-    User.aggregate([
-        {$match: { email: req.data.user.email } },
-        {
-            $addFields: {
-              education: { $push: req.body.education }
-            }
-        },
-      ]).exec((err) => {
-        if (err) {
-          return next(err);
-        }
-        res.status(200).json({
-          message: "Education data added successfully"
-        });
-      });
-      
+    User.updateOne(
+        { email: req.data.user.email },
+        { $addToSet: { skills: { $each: req.body.skills } } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "Skills added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    });    
 }
 
 
