@@ -232,8 +232,8 @@ exports.addSkills =async(req,res,next)=>{
     {
         $addToSet: {
             skills: {$each:req.body.skills}
-          }
-    }
+        }
+    },
   ])
   .exec((err, result) => {
     if (err) 
@@ -245,4 +245,16 @@ exports.addSkills =async(req,res,next)=>{
 })
 }
 
+
+
+exports.addExprince =async(req,res,next)=>{
+    User.aggregate([
+        {
+            $match:{email:req.data.email}
+        },
+        {
+
+        }
+    ])
+}
 
