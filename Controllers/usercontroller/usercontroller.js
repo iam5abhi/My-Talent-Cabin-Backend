@@ -276,3 +276,32 @@ exports.removeLanguage =async(req,res,next)=>{
         next(new Error(`${err.message}`, 500));
       });
 }
+
+
+exports.removeEducation =async(req,res,next)=>{
+    User.updateOne(
+        { email: req.data.user.email },
+        { $pull: { education: { $eq: req.body._id } } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
+}
+
+
+
+exports.removeExprience =async(req,res,next)=>{
+    User.updateOne(
+        { email: req.data.user.email },
+        { $pull: { experience: { $eq: req.body._id } } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
+}
