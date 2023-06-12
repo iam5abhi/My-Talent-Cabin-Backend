@@ -185,7 +185,7 @@ exports.addBio =async(req,res,next)=>{
     User.aggregate([
         {
             $match:{
-                email:ObjectID(req.data.user.email)
+                email:req.data.user.email
             }
         },
         {
