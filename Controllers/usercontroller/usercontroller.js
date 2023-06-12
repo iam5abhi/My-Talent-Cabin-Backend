@@ -125,9 +125,11 @@ exports.addLanguage =async(req,res,next)=>{
             }
         },
         {
-            $addToSet:{
-                language:req.body.language
-            }
+            $set: {
+                language: {
+                  $setUnion: ['$language', req.body.language]
+                }
+              }
         },
         {
             $merge: {
@@ -153,11 +155,9 @@ exports.addEducation =async(req,res,next)=>{
     User.aggregate([
         {$match: { email: req.data.user.email } },
         {
-            $set: {
-                language: {
-                  $setUnion: ['$language', req.body.language]
-                }
-              }
+            $addFields: {
+              education: { $push: req.body.education }
+            }
         },
       ]).exec((err) => {
         if (err) {
@@ -213,7 +213,7 @@ exports.addSkills =async(req,res,next)=>{
     {
         $set: {
             skills: {
-              $setUnion: ['$skills', req.body.skills]
+              $setUnion: ['$skills', req.body.ski]
             }
           }
     }
