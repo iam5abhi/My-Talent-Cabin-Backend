@@ -15,6 +15,9 @@ studentrouter.route('/').get(studentcontroller.getprofile)
 studentrouter.route('/skill').get(studentcontroller.getAllSubCategory)
 
 
+studentrouter.route('/add-location').patch(studentcontroller.addloaction)
+
+
 
 
 

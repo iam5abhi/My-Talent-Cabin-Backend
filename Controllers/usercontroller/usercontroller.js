@@ -33,7 +33,9 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     try {
+        console.log(req.body)
         const password = base64.decode(req.body.password);
+        console.log(password)
         const user = await User.findOne({$and:[
             {email: req.body.email },{status:'active'}]}, {createdAt: 0 })
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
@@ -107,7 +109,40 @@ exports.addloaction =async(req,res,next)=>{
             {
                 next(new Error(`${err.message}`, 500))
             }else{
-            res.status(200).send(result)
+            res.status(200).send({message:"Location added Sucessfully"})
+            }
+    })
+}
+
+
+
+exports.addLanguage =async(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    User.aggregate([
+        {
+            $match:{
+                _id:ObjectID(req.data.user._id)
+            }
+        },
+        {
+            $addToSet:{
+                language:req.body.language
+            }
+        },
+        {
+            $merge: {
+                into: 'users',
+                on: '_id',
+                whenMatched: 'replace',
+                whenNotMatched: 'insert'
+            }
+        }
+    ]).exec((err, result) => {
+            if (err) 
+            {
+                next(new Error(`${err.message}`, 500))
+            }else{
+            res.status(200).send({message:"Location added Sucessfully"})
             }
     })
 }
