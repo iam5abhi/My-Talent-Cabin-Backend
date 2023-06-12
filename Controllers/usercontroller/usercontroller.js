@@ -239,11 +239,28 @@ exports.addSkills =async(req,res,next)=>{
 exports.addExprince =async(req,res,next)=>{
     User.aggregate([
         {
-            $match:{email:req.data.email}
+            $match:{email:req.data.user.email}
         },
         {
-
+           $push:{
+            experience:req.body.experience
+           }
+        },
+        {
+            $merge: {
+                into: 'users',
+                on: '_id',
+                whenMatched: 'replace',
+                whenNotMatched: 'insert'
+            }
         }
-    ])
+    ]).exec((err, result) => {
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send({message:"bio added Sucessfully"})
+        }
+})
 }
 
