@@ -61,6 +61,14 @@ exports.getprofile =(req,res,next)=>{
             $match:{
                 _id:ObjectID(req.data.user._id)
             }
+        },
+        {
+            $lookup:{
+                from:'subcategories',
+                localField:'skills',
+                foreignField:"_id",
+                as:'myskill'
+            }
         }
     ])
     .exec((err, result) => {
@@ -142,7 +150,7 @@ exports.addLanguage =async(req,res,next)=>{
             {
                 next(new Error(`${err.message}`, 500))
             }else{
-            res.status(200).send({message:"Location added Sucessfully"})
+            res.status(200).send({message:"language added Sucessfully"})
             }
     })
 }
@@ -223,3 +231,5 @@ exports.addSkills =async(req,res,next)=>{
     }
 })
 }
+
+
