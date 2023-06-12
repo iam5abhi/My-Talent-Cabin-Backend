@@ -230,10 +230,12 @@ exports.addSkills =async(req,res,next)=>{
   User.aggregate([
     { $match: { email: req.data.email } },
     {
-        $addToSet: {
-            skills: {$each:req.body.skills}
+        $set: {
+          skills: {
+            $setUnion: ["$skills", req.body.skills]
+          }
         }
-    },
+      }
   ])
   .exec((err, result) => {
     if (err) 
