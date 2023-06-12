@@ -5,6 +5,7 @@ const mongoose =require('mongoose')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const createSendToken = require("../../suscribers/createSendToken");
 const SubCategory =require('../../Models/category/subcategory')
+const Intership =require('../../Models/Internship/Internship')
 
 
 
@@ -33,11 +34,10 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        console.log(req.body)
+    
         const password = base64.decode(req.body.password);
-        console.log(password)
         const user = await User.findOne({$and:[
-            {email: req.body.email },{status:'active'}]}, {createdAt: 0 })
+            {email: req.body.email },{status:'active'}]}, {createdAt: 0,updatedAt:0,education:0,bio:0,accountCreated:0,experience:0,status:0,Certification:0,skills:0,language:0,location:0})
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
         const isMatch = await user.comparepassword(password);
         if (!isMatch) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
