@@ -249,3 +249,17 @@ User.updateOne(
 });    
 }
 
+
+
+exports.removeSkill =async(req,res,next)=>{
+    User.updateOne(
+        { email: req.data.user.email },
+        { $pull: { skills:  req.body.value } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "education added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    }); 
+}
