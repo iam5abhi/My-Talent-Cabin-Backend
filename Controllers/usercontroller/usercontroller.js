@@ -171,9 +171,10 @@ exports.addLanguage =async(req,res,next)=>{
 
 
 exports.addEducation =async(req,res,next)=>{
+    console.log(req.body)
     User.updateOne(
         { email: req.data.user.email },
-        { $addToSet: { skills: { $each: req.body.skills } } }
+        { $push: { education:  req.body.education } }
     )
     .then(() => {
         res.status(200).send({ message: "Skills added successfully" });
