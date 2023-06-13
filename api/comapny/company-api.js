@@ -14,6 +14,11 @@ companyrouter.route('/change-password').patch(companycontroller.update_password)
 companyrouter.route('/').get(companycontroller.getprofile)
 
 
+companyrouter.route('/add-social-media-link').patch(companycontroller.addSocialMedia)
+companyrouter.route('/add-company-bio').patch(companycontroller.addcompanyBio)
+companyrouter.route('/add-hr').patch(companycontroller.addHr)
+
+
 
 
 

@@ -106,7 +106,6 @@ const CompanySchema =new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-      
 })
 
 

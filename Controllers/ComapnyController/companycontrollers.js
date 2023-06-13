@@ -31,7 +31,6 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const password = base64.decode(req.body.password);
-        console.log(password)
         const user = await Company.findOne({email: req.body.email }, {createdAt: 0 })
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
         const isMatch = await user.comparepassword(password);
@@ -42,7 +41,6 @@ exports.login = async (req, res, next) => {
     }
 }
 
-console.log("hello")
 
 
 exports.update_password =FactoryHandler.UpdatePasswordHandler(Company)
@@ -51,14 +49,44 @@ exports.update_password =FactoryHandler.UpdatePasswordHandler(Company)
 
 exports.getprofile =async(req,res,next)=>{
     const ObjectID = mongoose.Types.ObjectId; 
-    Company.aggregate([
-        {
-            $match:{_id:ObjectID(req.data.user._id)}
-        },
-    ])
+    Company.aggregate([{$match:{_id:ObjectID(req.data.user._id)}}])
     .exec((err, result) => {
         if (err) {next(new Error(`${err.message}`, 500))} 
         else {res.status(200).send(result)}
     });
 }
 
+
+exports.addSocialMedia =async(req,res,next)=>{
+    Company.updateOne({email:req.data.user.email},{$set:{linkedin_url:req.body.linkedinurl}})
+    .then(() => {
+        res.status(200).send({ message: "added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    }); 
+}
+
+
+
+exports.addcompanyBio =async(req,res,next)=>{
+    Company.updateOne({email:req.data.user.email},{$set:{bio:req.body.bio,video_url:req.body.url}})
+    .then(() => {
+        res.status(200).send({ message: "added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    }); 
+}
+
+
+
+exports.addHr =async(req,res,next)=>{
+    Company.updateOne({email:req.data.user.email},{$push:{hr:{name:req.body.name,designation:req.body.designation}}})
+    .then(() => {
+        res.status(200).send({ message: "added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    }); 
+}
