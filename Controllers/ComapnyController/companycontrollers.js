@@ -23,9 +23,7 @@ exports.signup = async (req, res, next) => {
             email: savedUser.email,
             PhoneNumber:savedUser.PhoneNumber
         });
-    } catch (err) {
-        next(new Error(`${err}`, 500))
-    }
+    } catch (err) {next(new Error(`${err}`, 500))}
 }
 
 
@@ -34,8 +32,7 @@ exports.login = async (req, res, next) => {
     try {
         const password = base64.decode(req.body.password);
         console.log(password)
-        const user = await Company.findOne({$and:[
-            {email: req.body.email },{status:'active'}]}, {createdAt: 0 })
+        const user = await Company.findOne({email: req.body.email }, {createdAt: 0 })
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
         const isMatch = await Company.comparepassword(password);
         if (!isMatch) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
@@ -56,17 +53,12 @@ exports.getprofile =async(req,res,next)=>{
     const ObjectID = mongoose.Types.ObjectId; 
     Company.aggregate([
         {
-            $match:{
-                _id:ObjectID(req.data.user._id)
-            }
+            $match:{_id:ObjectID(req.data.user._id)}
         },
-       
     ])
     .exec((err, result) => {
-        if (err) {
-            next(new Error(`${err.message}`, 500))
-        } else {
-           res.status(200).send(result)
-    }});
+        if (err) {next(new Error(`${err.message}`, 500))} 
+        else {res.status(200).send(result)}
+    });
 }
 
