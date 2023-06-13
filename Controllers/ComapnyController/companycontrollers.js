@@ -34,7 +34,7 @@ exports.login = async (req, res, next) => {
         console.log(password)
         const user = await Company.findOne({email: req.body.email }, {createdAt: 0 })
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
-        const isMatch = await Company.comparepassword(password);
+        const isMatch = await user.comparepassword(password);
         if (!isMatch) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
         createSendToken(user, 200, req, res, LOGIN_SUCCESS);
     } catch (error) {
@@ -42,7 +42,7 @@ exports.login = async (req, res, next) => {
     }
 }
 
-
+console.log("hello")
 
 
 exports.update_password =FactoryHandler.UpdatePasswordHandler(Company)
