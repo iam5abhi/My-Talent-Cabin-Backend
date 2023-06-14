@@ -37,8 +37,8 @@ exports.login = async (req, res, next) => {
     try {
     
         const password = base64.decode(req.body.password);
-        const user = await Mentor.findOne({$and:[
-            {email: req.body.email },{status:'active'}]}, {createdAt: 0,updatedAt:0,education:0,bio:0,accountCreated:0,experience:0,status:0,Certification:0,skills:0,language:0,location:0})
+        const user = await Mentor.findOne(
+            {email: req.body.email }, {createdAt: 0,updatedAt:0,education:0,bio:0,accountCreated:0,experience:0,status:0,Certification:0,skills:0,language:0,location:0})
         if (!user) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
         const isMatch = await user.comparepassword(password);
         if (!isMatch) return next(new Error(COMPARE_PASSWORD_USING_DB, 400));
