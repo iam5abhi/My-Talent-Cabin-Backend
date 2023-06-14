@@ -89,4 +89,20 @@ exports.addHr =async(req,res,next)=>{
     .catch((err) => {
         next(new Error(`${err.message}`, 500));
     }); 
+}     
+
+
+
+
+exports.DeleteHr =async(req,res,next)=>{
+    Company.updateOne(
+        { email: req.data.user.email },
+        { $pull:{ hr:{_id:req.body._id} }}
+    )
+    .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
 }

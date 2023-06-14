@@ -88,6 +88,6 @@ exports.CheckAllData =(Model,role)=>{
       Model.find({role:role},function(err,data){
          if(!data)return next(new Error("Data is not Availble",400));
          res.status(200).send({status:true,data:data})
-      }).select("+status");
+      }).select("+status");   
    }
 }
