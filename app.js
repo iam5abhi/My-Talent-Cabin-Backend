@@ -7,6 +7,7 @@ const GloBalErrorHandler =require('./Middleware/Error/Error')
 const admin =require('./api/admin/admim-api')
 const student =require('./api/student/student-api')
 const company =require('./api/comapny/company-api')
+const mentor =require('./api/mentor/mentor-api')
 
 
 
@@ -38,7 +39,8 @@ app.use(function(req, res, next) {
 // Hand The employee-routes
 app.use('/admin',admin)
 app.use('/student',student)
-// app.use('/company',company)
+app.use('/company',company)
+app.use('/mentor',mentor)
 
 
 // Page Not Found Error

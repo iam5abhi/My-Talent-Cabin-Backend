@@ -10,6 +10,7 @@ const createSendToken = require("../../suscribers/createSendToken");
 
 
 exports.signup = async (req, res, next) => {
+    console.log(req.body,"-------")
     try {
         const { name, email, password, confirmPassword,PhoneNumber} = req.body;
         if (base64.decode(password) !== base64.decode(confirmPassword)) return next(new Error(PASSWORD_NOT_MATCH, 400));

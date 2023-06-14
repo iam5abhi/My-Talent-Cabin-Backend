@@ -8,10 +8,10 @@ const isAuthenticated =require('../../Middleware/isAuthenticated/isAuthenticated
 mentorrouter.route('/signup').post(menorcontroller.signup)
 mentorrouter.route('/login').post(menorcontroller.login)
 
-studentrouter.use(isAuthenticated)
+mentorrouter.use(isAuthenticated)
 
 
-studentrouter.route('/change-password').patch(menorcontroller.update_password)
+mentorrouter.route('/change-password').patch(menorcontroller.update_password)
 
 
 

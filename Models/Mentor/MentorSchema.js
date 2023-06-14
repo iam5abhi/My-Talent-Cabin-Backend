@@ -93,7 +93,7 @@ const MentorSchema = new mongoose.Schema(
  
 );
  
-UserSchema.pre("save", async function (next) {
+MentorSchema.pre("save", async function (next) {
  if (!this.isModified("password")) {
    return next();
  }
@@ -105,7 +105,7 @@ UserSchema.pre("save", async function (next) {
 });
  
  
-UserSchema.methods.comparepassword=async function(password){
+MentorSchema.methods.comparepassword=async function(password){
  return await bcrypt.compare(password,this.password)
 }
  
