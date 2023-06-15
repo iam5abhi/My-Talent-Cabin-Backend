@@ -117,7 +117,8 @@ exports.AddInternships =async(req,res,next)=>{
         intershipWeek:req.body.intershipWeek,
         intershipType:req.body.intershipType,
         price:req.body.price,
-        tags:req.body.tags
+        tags:req.body.tags,
+        mentorId:req.body.mentorId
     })
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
@@ -125,7 +126,7 @@ exports.AddInternships =async(req,res,next)=>{
   
   
   exports.GetAllInternships  =async(req,res,next)=>{
-    const data = await Internships.find({}).populate('tags._id').populate('CompanyId')
+    const data = await Internships.find({}).populate('tags._id').populate('CompanyId').populate('mentorId')
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
   }
@@ -146,7 +147,8 @@ exports.AddInternships =async(req,res,next)=>{
     intershipWeek:req.body.intershipWeek,
     intershipType:req.body.intershipType,
     price:req.body.price,
-    tags:req.body.tags
+    tags:req.body.tags,
+    mentorId:req.body.mentorId
    }
    const data =await Internships.updateOne({_id:req.params.id},{$set:updatedData})
    if(!data) return next(new Error('no added',500))

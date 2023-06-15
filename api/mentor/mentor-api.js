@@ -14,11 +14,11 @@ mentorrouter.use(isAuthenticated)
 
 mentorrouter.route('/change-password').patch(menorcontroller.update_password)
 
-mentorrouter.route('/').get(commoncontroller.getProfile)
+mentorrouter.route('/').get(menorcontroller.getProfile)
 
 
 
-mentorrouter.route('/skill').get(menorcontroller.getAllSubCategory)
+mentorrouter.route('/skill').get(commoncontroller.getAllSubCategory)
 
 
 mentorrouter.route('/add-location').patch(menorcontroller.addloaction)
