@@ -44,6 +44,13 @@ adminrouter.route('/company-status/:id').patch(admincontroller.UpdateCompanyStat
 
 
 
+adminrouter.route('/mentor').post(admincontroller.CreateMentor).get(admincontroller.GetAllMentor)
+adminrouter.route('/mentor/:id').get(admincontroller.GetOneMentor).patch(admincontroller.UpdateMentor)
+adminrouter.route('/mentor-status/:id').patch(admincontroller.UpdateMentorStatus)
+
+
+
+
 
 
 

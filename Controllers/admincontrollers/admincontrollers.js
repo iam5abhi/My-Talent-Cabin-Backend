@@ -12,7 +12,7 @@ const SubCategory =require('../../Models/category/subcategory')
 const Internships =require('../../Models/Internship/Internship')
 const User =require('../../Models/User/UserShema')
 const Company =require('../../Models/Company/CompanySchema')
-
+const Mentor =require('../../Models/Mentor/MentorSchema')
 
 exports.signup = async (req, res, next) => {
     try {
@@ -212,6 +212,30 @@ exports.GetOneCompany =FactoryHandler.getOne(Company)
 exports.updateCompany=FactoryHandler.updateOne(Company)
 exports.UpdateCompanyStatus =FactoryHandler.updateOne(Company)
 
+
+
+
+
+
+exports.CreateMentor =async(req,res,next)=>{
+  const MentorData =await Mentor.create({
+   name:req.body.name,
+   email:req.body.email,
+   PhoneNumber:req.body.phoneNumber,
+   password:`${req.body.name.replace(/\s/g, "")}@123`,
+   confirmPassword:`${req.body.name.replace(/\s/g, "")}@123`,
+  })
+  if(!MentorData)return next(new Error('User not be created',500))
+ res.status(201).send(MentorData)
+}
+
+
+
+
+exports.GetAllMentor =FactoryHandler.getAll(Mentor)
+exports.GetOneMentor =FactoryHandler.getOne(Mentor)
+exports.updateMentor=FactoryHandler.updateOne(Mentor)
+exports.UpdateMentorStatus =FactoryHandler.updateOne(Mentor)
 
 
 
