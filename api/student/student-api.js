@@ -28,6 +28,9 @@ studentrouter.route('/add-exp').patch(studentcontroller.addExprince)
 studentrouter.route('/delete-exp').patch(studentcontroller.removeExprience)
 
 
+studentrouter.route('/internship').get(studentcontroller.getAllInternship)
+
+
 
 
 module.exports =studentrouter

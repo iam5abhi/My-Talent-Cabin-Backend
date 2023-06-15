@@ -304,3 +304,16 @@ exports.removeExprience =async(req,res,next)=>{
         next(new Error(`${err.message}`, 500));
       });
 }
+
+exports.getAllInternship =async(req,res,next)=>{
+    Intership.aggregate([
+        {$match:{}}
+    ]).exec((err, result)=>{
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+    })
+}
