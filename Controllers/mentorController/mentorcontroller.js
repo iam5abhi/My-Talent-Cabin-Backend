@@ -101,27 +101,18 @@ exports.addloaction =async(req,res,next)=>{
 
 
 exports.addLanguage =async(req,res,next)=>{
-    const ObjectID = mongoose.Types.ObjectId; 
-    Mentor.aggregate([
+    Mentor.updateOne(
         {
-            $match:{
-                _id:ObjectID(req.data.user._id)
-            }
+                email:req.data.user.email
+       
         },
         {
             $addToSet: {
                 language: {$each:req.body.language}
               }
         },
-        {
-            $merge: {
-                into: 'users',
-                on: '_id',
-                whenMatched: 'replace',
-                whenNotMatched: 'insert'
-            }
-        }
-    ]).exec((err, result) => {
+       
+    ).exec((err, result) => {
             if (err) 
             {
                 next(new Error(`${err.message}`, 500))
