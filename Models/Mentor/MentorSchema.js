@@ -39,6 +39,9 @@ const MentorSchema = new mongoose.Schema(
      ]
    },
    language:[],
+   location:{
+      type:String,
+   },
    avatar: {
      type: String,
      default:"https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg"
@@ -59,7 +62,7 @@ const MentorSchema = new mongoose.Schema(
      maxLength: 500,
      match:[
        /^[a-zA-Z0-9_\.\-]{8,500}$/,
-       "please fill a valid firstName"
+       "please fill a valid bio"
      ]
    },
    password: {

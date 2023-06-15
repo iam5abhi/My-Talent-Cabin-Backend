@@ -171,7 +171,6 @@ exports.addLanguage =async(req,res,next)=>{
 
 
 exports.addEducation =async(req,res,next)=>{
-    console.log(req.body)
     User.updateOne(
         { email: req.data.user.email },
         { $push: { education:  req.body.education } }
