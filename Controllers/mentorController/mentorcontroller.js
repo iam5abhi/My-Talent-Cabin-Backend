@@ -4,7 +4,7 @@ const base64 = require("base-64");
 const mongoose =require('mongoose')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const createSendToken = require("../../suscribers/createSendToken");
-const SubCategory =require('../../Models/category/category')
+const SubCategory =require('../../Models/category/subcategory')
 
 
 
