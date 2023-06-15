@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Company =require('../../Models/Company/CompanySchema')
 const Subcategory =require('../../Models/category/subcategory')
+const Mentor =require('../Mentor/MentorSchema')
 
 const InternshipSchema = new mongoose.Schema(
   {
@@ -28,6 +29,10 @@ const InternshipSchema = new mongoose.Schema(
     },
     price:{
        type:Number,
+    },
+    mentorId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Mentor'
     },
     tags: [
       {
