@@ -322,5 +322,16 @@ exports.getAllInternship =async(req,res,next)=>{
 
 
 exports.getOneInternship =(req,res,next)=>{
-
+    const ObjectID = mongoose.Types.ObjectId; 
+    Intership.aggregate([
+        {$match:{_id:ObjectID(req.params.id)}},
+        {$project:{CompanyId:0,status:0,mentorId:0,updatedAt:0,createdAt:0,tags:0}}
+    ]).exec((err, result)=>{
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+    })
 }
