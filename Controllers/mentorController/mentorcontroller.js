@@ -108,7 +108,7 @@ exports.addLanguage =async(req,res,next)=>{
         },
         {
             $set: {
-                language: {$each:req.body.language}
+                language: req.body.language
               }
         },
        
