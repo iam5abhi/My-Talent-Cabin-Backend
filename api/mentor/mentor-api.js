@@ -2,6 +2,7 @@ const express = require("express");
 const mentorrouter = express.Router();
 const menorcontroller =require('../../Controllers/mentorController/mentorcontroller')
 const isAuthenticated =require('../../Middleware/isAuthenticated/isAuthenticated')
+const commoncontroller =require('../../common/commonControllers')
 
 
 
@@ -13,7 +14,7 @@ mentorrouter.use(isAuthenticated)
 
 mentorrouter.route('/change-password').patch(menorcontroller.update_password)
 
-mentorrouter.route('/').get(menorcontroller.getProfile)
+mentorrouter.route('/').get(commoncontroller.getProfile)
 
 
 

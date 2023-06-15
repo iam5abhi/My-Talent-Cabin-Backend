@@ -1,6 +1,7 @@
 const express = require("express");
 const studentrouter = express.Router();
 const studentcontroller =require('../../Controllers/usercontroller/usercontroller')
+const commoncontroller =require('../../common/commonControllers')
 const isAuthenticated =require('../../Middleware/isAuthenticated/isAuthenticated')
 
 
@@ -12,7 +13,7 @@ studentrouter.use(isAuthenticated)
 studentrouter.route('/change-password').patch(studentcontroller.update_password)
 
 studentrouter.route('/').get(studentcontroller.getprofile)
-studentrouter.route('/skill').get(studentcontroller.getAllSubCategory)
+studentrouter.route('/skill').get(commoncontroller.getAllSubCategory)
 
 
 studentrouter.route('/add-location').patch(studentcontroller.addloaction)
