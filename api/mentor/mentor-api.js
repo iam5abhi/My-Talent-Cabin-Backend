@@ -20,9 +20,14 @@ mentorrouter.route('/').get(menorcontroller.getProfile)
 mentorrouter.route('/skill').get(menorcontroller.getAllSubCategory)
 
 
+mentorrouter.route('/add-location').patch(menorcontroller.addloaction)
 mentorrouter.route('/add-language').patch(menorcontroller.addLanguage)
-mentorrouter.route('/add-personal-information').patch(menorcontroller.addBio)
+mentorrouter.route('/delete-language').patch(menorcontroller.removeLanguage)
+mentorrouter.route('/add-education').patch(menorcontroller.addEducation)
+mentorrouter.route('/delete-education').patch(menorcontroller.removeEducation)
+mentorrouter.route('/add-bio').patch(menorcontroller.addBio)
 mentorrouter.route('/add-skill').patch(menorcontroller.addSkills) 
+mentorrouter.route('/delete-skill').patch(menorcontroller.removeSkill)
 mentorrouter.route('/add-exp').patch(menorcontroller.addExprince)
 mentorrouter.route('/delete-exp').patch(menorcontroller.removeExprience)
 

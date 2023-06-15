@@ -86,12 +86,45 @@ exports.getAllSubCategory =async(req,res,next)=>{
 
 
 
-
-exports.addLanguage =async(req,res,next)=>{
+exports.addloaction =async(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
     Mentor.aggregate([
         {
             $match:{
-                email:req.data.user.email
+                _id:ObjectID(req.data.user._id)
+            }
+        },
+        {
+            $set:{
+                location:req.body.location
+            }
+        },
+        {
+            $merge: {
+                into: 'users',
+                on: '_id',
+                whenMatched: 'replace',
+                whenNotMatched: 'insert'
+            }
+        }
+    ]).exec((err, result) => {
+            if (err) 
+            {
+                next(new Error(`${err.message}`, 500))
+            }else{
+            res.status(200).send({message:"Location added Sucessfully"})
+            }
+    })
+}
+
+
+
+exports.addLanguage =async(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    Mentor.aggregate([
+        {
+            $match:{
+                _id:ObjectID(req.data.user._id)
             }
         },
         {
@@ -119,18 +152,52 @@ exports.addLanguage =async(req,res,next)=>{
 
 
 
+exports.addEducation =async(req,res,next)=>{
+    Mentor.updateOne(
+        { email: req.data.user.email },
+        { $push: { education:  req.body.education } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "education added successfully" });
+    })
+    .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+    });    
+}
+
+
 
 
 
 exports.addBio =async(req,res,next)=>{
-    Mentor.updateOne({email:req.data.user.email},{$set:{bio:req.body.bio,location:req.body.location}}).exec((err, result) => {
+
+    Mentor.aggregate([
+        {
+            $match:{
+                email:req.data.user.email
+            }
+        },
+        {
+            $set:{
+                bio:req.body.bio
+            }
+        },
+        {
+            $merge: {
+                into: 'users',
+                on: '_id',
+                whenMatched: 'replace',
+                whenNotMatched: 'insert'
+            }
+        }
+    ]).exec((err, result) => {
             if (err) 
             {
                 next(new Error(`${err.message}`, 500))
             }else{
             res.status(200).send({message:"bio added Sucessfully"})
             }
-        })
+    })
 }
 
 
@@ -151,23 +218,64 @@ exports.addSkills =async(req,res,next)=>{
 
 
 exports.addExprince =async(req,res,next)=>{   
-    Mentor.updateOne(
-        { email: req.data.user.email },
-        { $push: { experience:  req.body.experience } }
-    )
-    .then(() => {
-        res.status(200).send({ message: "education added successfully" });
-    })
-    .catch((err) => {
-        next(new Error(`${err.message}`, 500));
-    });    
+Mentor.updateOne(
+    { email: req.data.user.email },
+    { $push: { experience:  req.body.experience } }
+)
+.then(() => {
+    res.status(200).send({ message: "education added successfully" });
+})
+.catch((err) => {
+    next(new Error(`${err.message}`, 500));
+});    
 }
 
 
 
+exports.removeSkill =async(req,res,next)=>{
+    Mentor.updateOne(
+        { email: req.data.user.email },
+        { $pull: { skills: { $eq: req.body.value } } }
+      )
+      .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
+}
+
+exports.removeLanguage =async(req,res,next)=>{
+    Mentor.updateOne(
+        { email: req.data.user.email },
+        { $pull: { language: { $eq: req.body.value } } }
+      )
+      .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
+}
+
+
+exports.removeEducation =async(req,res,next)=>{
+    Mentor.updateOne(
+        { email: req.data.user.email },
+        { $pull: { education: {_id:req.body._id } } }
+    )
+    .then(() => {
+        res.status(200).send({ message: "Element removed successfully" });
+      })
+      .catch((err) => {
+        next(new Error(`${err.message}`, 500));
+      });
+}
+
+
 
 exports.removeExprience =async(req,res,next)=>{
-    User.updateOne(
+    Mentor.updateOne(
         { email: req.data.user.email },
         { $pull: { experience: {_id:req.body._id} } }
     )
