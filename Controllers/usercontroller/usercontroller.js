@@ -333,6 +333,14 @@ exports.getOneInternship =(req,res,next)=>{
                 as:'MentorData'
             }
         },
+        {
+            $lookup:{
+                from:'subcategories',
+                localField:'tags._id',
+                foreignField:'_id',
+                as:'skilldata'
+            }
+        },
         {$project:{CompanyId:0,status:0,mentorId:0,updatedAt:0,createdAt:0,tags:0}}
     ]).exec((err, result)=>{
         if (err) 
