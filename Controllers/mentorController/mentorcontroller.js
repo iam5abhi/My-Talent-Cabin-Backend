@@ -88,26 +88,7 @@ exports.getAllSubCategory =async(req,res,next)=>{
 
 exports.addloaction =async(req,res,next)=>{
     const ObjectID = mongoose.Types.ObjectId; 
-    Mentor.aggregate([
-        {
-            $match:{
-                _id:ObjectID(req.data.user._id)
-            }
-        },
-        {
-            $set:{
-                location:req.body.location
-            }
-        },
-        {
-            $merge: {
-                into: 'users',
-                on: '_id',
-                whenMatched: 'replace',
-                whenNotMatched: 'insert'
-            }
-        }
-    ]).exec((err, result) => {
+    Mentor.updateOne({email:req.data.user.email},{$set:{location:req.body.location}}).exec((err, result) => {
             if (err) 
             {
                 next(new Error(`${err.message}`, 500))
