@@ -123,35 +123,14 @@ exports.addLanguage =async(req,res,next)=>{
 
 
 exports.addBio =async(req,res,next)=>{
-
-    Mentor.aggregate([
-        {
-            $match:{
-                email:req.data.user.email
-            }
-        },
-        {
-            $set:{
-                bio:req.body.bio,
-                location:req.body.location
-            }
-        },
-        {
-            $merge: {
-                into: 'users',
-                on: '_id',
-                whenMatched: 'replace',
-                whenNotMatched: 'insert'
-            }
-        }
-    ]).exec((err, result) => {
+    Mentor.updateOne({email:req.data.user.email},{$set:{bio:req.body.bio,location:req.body.location}}).exec((err, result) => {
             if (err) 
             {
                 next(new Error(`${err.message}`, 500))
             }else{
             res.status(200).send({message:"bio added Sucessfully"})
             }
-    })
+        })
 }
 
 
