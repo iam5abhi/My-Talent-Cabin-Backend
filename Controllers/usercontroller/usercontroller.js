@@ -325,6 +325,14 @@ exports.getOneInternship =(req,res,next)=>{
     const ObjectID = mongoose.Types.ObjectId; 
     Intership.aggregate([
         {$match:{_id:ObjectID(req.params.id)}},
+        {
+            $lookup:{
+                from:'mentors',
+                localField:'mentorId',
+                foreignField:'_id',
+                as:'MentorData'
+            }
+        },
         {$project:{CompanyId:0,status:0,mentorId:0,updatedAt:0,createdAt:0,tags:0}}
     ]).exec((err, result)=>{
         if (err) 
