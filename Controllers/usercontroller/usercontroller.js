@@ -307,7 +307,8 @@ exports.removeExprience =async(req,res,next)=>{
 
 exports.getAllInternship =async(req,res,next)=>{
     Intership.aggregate([
-        {$match:{}}
+        {$match:{}},
+        {$project:{CompanyId:0,status:0,mentorId:0,updatedAt:0,createdAt:0,tags:0}}
     ]).exec((err, result)=>{
         if (err) 
         {
@@ -316,4 +317,10 @@ exports.getAllInternship =async(req,res,next)=>{
         res.status(200).send(result)
         }
     })
+}
+
+
+
+exports.getOneInternship =(req,res,next)=>{
+
 }
