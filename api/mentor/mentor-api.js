@@ -17,7 +17,7 @@ mentorrouter.route('/').get(menorcontroller.getProfile)
 
 
 
-mentorrouter.route('/skill').get(studentcontroller.getAllSubCategory)
+mentorrouter.route('/skill').get(menorcontroller.getAllSubCategory)
 
 
 mentorrouter.route('/add-language').patch(menorcontroller.addLanguage)
