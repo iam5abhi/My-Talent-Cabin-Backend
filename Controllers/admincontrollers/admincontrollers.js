@@ -133,7 +133,7 @@ exports.AddInternships =async(req,res,next)=>{
   
   
   exports.GetOneInternships =async(req,res,next)=>{
-    const data = await Internships.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId')
+    const data = await Internships.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId').populate('mentorId')
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
   }
