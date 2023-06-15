@@ -143,26 +143,7 @@ exports.addEducation =async(req,res,next)=>{
 
 exports.addBio =async(req,res,next)=>{
 
-    Mentor.aggregate([
-        {
-            $match:{
-                email:req.data.user.email
-            }
-        },
-        {
-            $set:{
-                bio:req.body.bio
-            }
-        },
-        {
-            $merge: {
-                into: 'users',
-                on: '_id',
-                whenMatched: 'replace',
-                whenNotMatched: 'insert'
-            }
-        }
-    ]).exec((err, result) => {
+    Mentor.updateOne({email:req.data.user.email},{$set:{bio:req.body.bio}}).exec((err, result) => {
             if (err) 
             {
                 next(new Error(`${err.message}`, 500))
