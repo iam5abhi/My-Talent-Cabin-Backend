@@ -60,11 +60,23 @@ exports.getProfile =async(req,res,next)=>{
             $match:{email:req.data.user.email}
         },
         {
+            $lookup:{
+                from:'subcategories',
+                localField:'skills',
+                foreignField:"_id",
+                as:'myskill'
+            }
+        },
+        {
         $project:{
-            status:0,
-            accountCreated:0,
-            confirmPassword:0,
-            password:0
+            skills:0,
+                password:0,
+                confirmPassword:0,
+                isAccountVerified:0,
+                accountCreated:0,
+                status:0,
+                createdAt:0,
+                updatedAt:0
         }
         }
     ]).exec((err, result) => {
