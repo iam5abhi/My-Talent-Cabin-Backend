@@ -30,8 +30,7 @@ studentrouter.route('/delete-exp').patch(studentcontroller.removeExprience)
 
 studentrouter.route('/internship').get(studentcontroller.getAllInternship)
 
-studentrouter.route('/internship').get(studentcontroller.getOneInternship)
-studentrouter.route('/internship/:id').get(studentcontroller.enrollStudent)
+studentrouter.route('/internship/:id').get(studentcontroller.getOneInternship).patch(studentcontroller.enrollStudent)
 
 
 
