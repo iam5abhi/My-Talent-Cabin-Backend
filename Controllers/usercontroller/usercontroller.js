@@ -351,3 +351,16 @@ exports.getOneInternship =(req,res,next)=>{
         }
     })
 }
+
+
+
+exports.enrollStudent =(req,res,next)=>{   
+        Intership.updateOne({_id:req.params.id},{$push:{enrollStudent:{studentId:req.body.studentId}}}).exec((err,result)=>{
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+    })
+}

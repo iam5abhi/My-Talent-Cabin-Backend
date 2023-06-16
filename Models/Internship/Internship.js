@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Company =require('../../Models/Company/CompanySchema')
 const Subcategory =require('../../Models/category/subcategory')
 const Mentor =require('../Mentor/MentorSchema')
+const User =require('../User/UserShema')
 
 const InternshipSchema = new mongoose.Schema(
   {
@@ -34,6 +35,12 @@ const InternshipSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref:'Mentor'
     },
+    enrollStudent:[{
+      studentId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      }
+    }],
     tags: [
       {
         _id: {
