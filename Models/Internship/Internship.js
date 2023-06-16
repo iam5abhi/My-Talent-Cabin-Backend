@@ -39,6 +39,9 @@ const InternshipSchema = new mongoose.Schema(
       studentId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+      },
+      description:{
+          type:String
       }
     }],
     tags: [

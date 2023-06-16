@@ -355,7 +355,7 @@ exports.getOneInternship =(req,res,next)=>{
 
 
 exports.enrollStudent =(req,res,next)=>{   
-        Intership.updateOne({_id:req.params.id},{$push:{enrollStudent:{studentId:req.body.studentId}}}).exec((err,result)=>{
+        Intership.updateOne({_id:req.params.id},{$push:{enrollStudent:{studentId:req.body.studentId,description:req.body.description}}}).exec((err,result)=>{
         if (err) 
         {
             next(new Error(`${err.message}`, 500))
