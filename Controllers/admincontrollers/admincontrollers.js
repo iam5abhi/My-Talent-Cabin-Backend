@@ -126,9 +126,47 @@ exports.AddInternships =async(req,res,next)=>{
   
   
   exports.GetAllInternships  =async(req,res,next)=>{
-    const data = await Internships.find({}).populate('tags._id').populate('CompanyId').populate('mentorId').populate('enrollStudent.studentId')
-    if(!data) return next(new Error('no added',500))
-    res.status(201).send(data)
+        Internships.aggregate([
+          {
+            $lookup:{
+                from:'companies',
+                localField:'CompanyId',
+                foreignField:'_id',
+                as:'companyData'
+            }
+        },
+        {
+          $lookup:{
+              from:'mentors',
+              localField:'mentorId',
+              foreignField:'_id',
+              as:'MentorData'
+          }
+      },
+      {
+        $lookup:{
+            from:'users',
+            localField:'enrollStudent.studentId',
+            foreignField:'_id',
+            as:'UserData'
+        }
+    },
+    {
+      $lookup:{
+          from:'subcategories',
+          localField:'tags._id',
+          foreignField:'_id',
+          as:'tags'
+      }
+    },
+    ]).exec((err, result)=>{
+      if (err) 
+      {
+          next(new Error(`${err.message}`, 500))
+      }else{
+      res.status(200).send(result)
+      }
+  })
   }
   
   
