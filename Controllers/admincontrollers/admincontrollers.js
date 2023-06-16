@@ -159,6 +159,11 @@ exports.AddInternships =async(req,res,next)=>{
           as:'tags'
       }
     },
+    {
+      $project:{
+        enrollStudent:0,tags:0,mentorId:0,CompanyId:0
+      }
+    }
     ]).exec((err, result)=>{
       if (err) 
       {

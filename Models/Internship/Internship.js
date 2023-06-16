@@ -35,15 +35,17 @@ const InternshipSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref:'Mentor'
     },
-    enrollStudent:[{
-      studentId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: User,
-      },
-      description:{
-          type:String
+    enrollStudent:[
+      {
+        studentId:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: User,
+        },
+        description:{
+            type:String
+        }
       }
-    }],
+    ],
     tags: [
       {
         _id: {
