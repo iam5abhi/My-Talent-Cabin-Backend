@@ -38,7 +38,7 @@ const InternshipSchema = new mongoose.Schema(
     enrollStudent:[{
       studentId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: User,
       },
       description:{
           type:String
