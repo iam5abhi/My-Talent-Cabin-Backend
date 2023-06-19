@@ -364,3 +364,58 @@ exports.enrollStudent =(req,res,next)=>{
         }
     })
 }
+
+
+
+exports.updateManyInternshipStatus =(req,res,next)=>{
+    Intership.updateMany({status:'complete'}).exec((err,result)=>{
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+    })
+}
+
+
+
+
+exports.StudentEnrollProject =(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    Intership.aggregate([
+        {
+            $match:{
+                'enrollStudent.studentId':ObjectID(req.data.user._id)
+            }
+        },
+        {
+          $lookup:{
+              from:'mentors',
+              localField:'mentorId',
+              foreignField:'_id',
+              as:'MentorData'
+          }
+      },
+    {
+      $lookup:{
+          from:'subcategories',
+          localField:'tags._id',
+          foreignField:'_id',
+          as:'tags'
+      }
+    },
+    {
+      $project:{
+        enrollStudent:0,tags:0,mentorId:0,CompanyId:0
+      }
+    }
+    ]).exec((err, result)=>{
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+    })
+}
