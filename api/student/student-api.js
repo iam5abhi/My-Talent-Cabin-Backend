@@ -33,5 +33,8 @@ studentrouter.route('/internship').get(studentcontroller.getAllInternship)
 studentrouter.route('/internship/:id').get(studentcontroller.getOneInternship).patch(studentcontroller.enrollStudent)
 
 
+studentrouter.route('/project-enroll').get(studentcontroller.StudentEnrollProject)
+
+
 
 module.exports =studentrouter
