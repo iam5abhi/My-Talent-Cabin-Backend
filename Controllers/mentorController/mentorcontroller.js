@@ -297,53 +297,14 @@ exports.AddInternships =async(req,res,next)=>{
         intershipType:req.body.intershipType,
         price:req.body.price,
         tags:req.body.tags,
-        mentorId:req.data.user.mentorId
+        mentorId:req.data.user._id
     })
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
   }
   
   
-  exports.GetAllInternships  =async(req,res,next)=>{
-       Internship.aggregate([
-          {
-            $lookup:{
-                from:'companies',
-                localField:'CompanyId',
-                foreignField:'_id',
-                as:'companyData'
-            }
-        },
-        {
-            $lookup:{
-                from:'users',
-                localField:'enrollStudent.studentId',
-                foreignField:'_id',
-                as:'UserData'
-            }
-        },
-        {
-        $lookup:{
-            from:'subcategories',
-            localField:'tags._id',
-            foreignField:'_id',
-            as:'tags'
-        }
-        },
-        {
-        $project:{
-            enrollStudent:0,tags:0,mentorId:0,CompanyId:0
-        }
-        }
-    ]).exec((err, result)=>{
-      if (err) 
-      {
-          next(new Error(`${err.message}`, 500))
-      }else{
-      res.status(200).send(result)
-      }
-  })
-  }
+  
   
   
   exports.GetOneInternships =async(req,res,next)=>{

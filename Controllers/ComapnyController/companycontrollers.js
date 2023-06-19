@@ -106,3 +106,47 @@ exports.DeleteHr =async(req,res,next)=>{
         next(new Error(`${err.message}`, 500));
       });
 }
+
+
+
+
+exports.AddInternships =async(req,res,next)=>{
+    const data = await Internship.create({
+        CompanyId:req.data.user._id,
+        title:req.body.title,
+        description:req.body.description,
+        intershipWeek:req.body.intershipWeek,
+        intershipType:req.body.intershipType,
+        price:req.body.price,
+        tags:req.body.tags,
+        mentorId:req.body.mentorId
+    })
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  
+  
+  
+  exports.GetOneInternships =async(req,res,next)=>{
+    const data = await Internship.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId').populate('mentorId')
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  
+  exports.updateIntership =async(req,res,next)=>{
+   const updatedData={
+    title:req.body.title,
+    description:req.body.description,
+    intershipWeek:req.body.intershipWeek,
+    intershipType:req.body.intershipType,
+    price:req.body.price,
+    tags:req.body.tags,
+   }
+   const data =await Internship.updateOne({_id:req.params.id},{$set:updatedData})
+   if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
