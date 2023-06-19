@@ -132,6 +132,44 @@ exports.AddInternships =async(req,res,next)=>{
   
   
   exports.GetOneInternships =async(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    Internship.aggregate([
+        {
+            $match:{_id:ObjectID(req.params.id)}
+        },
+        {
+            $lookup:{
+                from:'subcategories',
+                localField:'tags._id',
+                foreignField:'_id',
+                as:'skilldata'
+            }
+        },
+        {
+            $lookup:{
+                from:'users',
+                localField:'enrollStudent.studentId',
+                foreignField:'_id',
+                as:'UserData'
+            }
+        },
+        {
+            $lookup:{
+                from:'companies',
+                localField:'CompanyId',
+                foreignField:'_id',
+                as:'companyData'
+            }
+        },
+        {
+          $lookup:{
+              from:'mentors',
+              localField:'mentorId',
+              foreignField:'_id',
+              as:'MentorData'
+          }
+      },
+    ])
     const data = await Internship.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId').populate('mentorId')
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
@@ -155,7 +193,7 @@ exports.AddInternships =async(req,res,next)=>{
 
 
 
-  xports.enrollProject =(req,res,next)=>{
+  exports.enrollProject =(req,res,next)=>{
     const ObjectID = mongoose.Types.ObjectId; 
     Internship.aggregate([
         {
