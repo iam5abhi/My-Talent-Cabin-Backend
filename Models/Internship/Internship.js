@@ -9,7 +9,6 @@ const InternshipSchema = new mongoose.Schema(
     CompanyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: Company,
-      required: [true, "Company id is required"],
     },
     title: {
       type: String,
