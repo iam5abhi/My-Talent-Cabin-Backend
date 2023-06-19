@@ -32,6 +32,8 @@ mentorrouter.route('/delete-skill').patch(menorcontroller.removeSkill)
 mentorrouter.route('/add-exp').patch(menorcontroller.addExprince)
 mentorrouter.route('/delete-exp').patch(menorcontroller.removeExprience)
 
+mentorrouter.route('me-enroll-project').get(menorcontroller.enrollProject)
+
 
 
 module.exports =mentorrouter

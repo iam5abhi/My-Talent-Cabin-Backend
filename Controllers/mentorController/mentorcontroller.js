@@ -5,6 +5,7 @@ const mongoose =require('mongoose')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const createSendToken = require("../../suscribers/createSendToken");
 const SubCategory =require('../../Models/category/subcategory')
+const Internship =require('../../Models/Internship/Internship')
 
 
 
@@ -250,4 +251,37 @@ exports.removeExprience =async(req,res,next)=>{
       .catch((err) => {
         next(new Error(`${err.message}`, 500));
       });
+}
+
+
+exports.enrollProject =(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId; 
+    Internship.aggregate([
+        {
+            $match:{mentorId:ObjectID(req.data.user._id)}
+        },
+        {
+            $lookup:{
+                from:'subcategories',
+                localField:'tags._id',
+                foreignField:'_id',
+                as:'skilldata'
+            }
+        },
+        {
+            $lookup:{
+                from:'users',
+                localField:'enrollStudent.studentId',
+                foreignField:'_id',
+                as:'UserData'
+            }
+        },
+    ]).exec((err, result)=>{
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+    })
 }
