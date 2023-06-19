@@ -36,4 +36,10 @@ mentorrouter.route('me-enroll-project').get(menorcontroller.enrollProject)
 
 
 
+adminrouter.route('/intership').post(menorcontroller.AddInternships).get(menorcontroller.GetAllInternships)
+adminrouter.route('/intership/:id').get(menorcontroller.GetOneInternships).patch(menorcontroller.updateIntership)
+adminrouter.route('/intership-status/:id').patch(menorcontroller.UpdateInertshipStaus)
+
+
+
 module.exports =mentorrouter

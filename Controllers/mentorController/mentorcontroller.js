@@ -285,3 +285,89 @@ exports.enrollProject =(req,res,next)=>{
         }
     })
 }
+
+
+
+exports.AddInternships =async(req,res,next)=>{
+    const data = await Internship.create({
+        CompanyId:req.body.CompanyId,
+        title:req.body.title,
+        description:req.body.description,
+        intershipWeek:req.body.intershipWeek,
+        intershipType:req.body.intershipType,
+        price:req.body.price,
+        tags:req.body.tags,
+        mentorId:req.data.user.mentorId
+    })
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  exports.GetAllInternships  =async(req,res,next)=>{
+       Internship.aggregate([
+          {
+            $lookup:{
+                from:'companies',
+                localField:'CompanyId',
+                foreignField:'_id',
+                as:'companyData'
+            }
+        },
+        {
+            $lookup:{
+                from:'users',
+                localField:'enrollStudent.studentId',
+                foreignField:'_id',
+                as:'UserData'
+            }
+        },
+        {
+        $lookup:{
+            from:'subcategories',
+            localField:'tags._id',
+            foreignField:'_id',
+            as:'tags'
+        }
+        },
+        {
+        $project:{
+            enrollStudent:0,tags:0,mentorId:0,CompanyId:0
+        }
+        }
+    ]).exec((err, result)=>{
+      if (err) 
+      {
+          next(new Error(`${err.message}`, 500))
+      }else{
+      res.status(200).send(result)
+      }
+  })
+  }
+  
+  
+  exports.GetOneInternships =async(req,res,next)=>{
+    const data = await Internship.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId').populate('mentorId')
+    if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+  
+  
+  
+  exports.updateIntership =async(req,res,next)=>{
+   const updatedData={
+    title:req.body.title,
+    description:req.body.description,
+    intershipWeek:req.body.intershipWeek,
+    intershipType:req.body.intershipType,
+    price:req.body.price,
+    tags:req.body.tags,
+   }
+   const data =await Internship.updateOne({_id:req.params.id},{$set:updatedData})
+   if(!data) return next(new Error('no added',500))
+    res.status(201).send(data)
+  }
+
+
+
+
