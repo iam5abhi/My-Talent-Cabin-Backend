@@ -22,7 +22,7 @@ companyrouter.route('/delete-hr').patch(companycontroller.DeleteHr)
 
 
 
-companyrouter.route('/intership').post(companycontroller.AddInternships).get(menorcontroller.enrollProject)
+companyrouter.route('/intership').post(companycontroller.AddInternships).get(companycontroller.enrollProject)
 companyrouter.route('/intership/:id').get(companycontroller.GetOneInternships).patch(companycontroller.updateIntership)
 
 
