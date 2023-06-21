@@ -138,7 +138,7 @@ exports.addloaction =async(req,res,next)=>{
 
 
 exports.addLanguage =async(req,res,next)=>{
-    User.updateOne({email:req.data.user.email},{$addToSet:{language:req.body.language}}).exec((err, result) => {
+    User.updateOne({email:req.data.user.email},{ $addToSet: { language: { $each: req.body.language } } }).exec((err, result) => {
                 if (err) 
                 {
                     next(new Error(`${err.message}`, 500))
