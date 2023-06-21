@@ -118,7 +118,10 @@ exports.AddInternships =async(req,res,next)=>{
         intershipType:req.body.intershipType,
         price:req.body.price,
         tags:req.body.tags,
-        mentorId:req.body.mentorId
+        mentorId:req.body.mentorId,
+        startDate:req.body.startDate,
+        endDate:req.body.endDate,
+        
     })
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
@@ -169,6 +172,7 @@ exports.AddInternships =async(req,res,next)=>{
       {
           next(new Error(`${err.message}`, 500))
       }else{
+        AutomaticStatusComplete()
       res.status(200).send(result)
       }
   })
@@ -176,7 +180,7 @@ exports.AddInternships =async(req,res,next)=>{
   
   
   exports.GetOneInternships =async(req,res,next)=>{
-    const data = await Internships.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId').populate('mentorId')
+    const data = await Internships.findOne({_id:req.params.id}).populate('tags._id').populate('CompanyId').populate('mentorId').populate('enrollStudent.studentId')
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)
   }
@@ -281,6 +285,13 @@ exports.GetAllMentor =FactoryHandler.getAll(Mentor)
 exports.GetOneMentor =FactoryHandler.getOne(Mentor)
 exports.updateMentor=FactoryHandler.updateOne(Mentor)
 exports.UpdateMentorStatus =FactoryHandler.updateOne(Mentor)
+
+
+
+exports.AutomaticStatusComplete =async(req,res,next)=>{
+    const data =await Internships.updateMany({endDate:{$eq:new Date()}},{$set:{status:'complete'}})
+    return data
+}
 
 
 

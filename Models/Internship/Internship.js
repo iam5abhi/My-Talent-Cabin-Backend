@@ -53,6 +53,12 @@ const InternshipSchema = new mongoose.Schema(
         },
       },
     ],
+    startDate:{
+      type:Date,
+    },
+    endtDate:{
+      type:Date,
+    },
     status: {
       type: String,
       enum: ["approved", "rejected", "pending", "inactive", "complete"],
