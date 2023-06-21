@@ -138,33 +138,13 @@ exports.addloaction =async(req,res,next)=>{
 
 
 exports.addLanguage =async(req,res,next)=>{
-    const ObjectID = mongoose.Types.ObjectId; 
-    User.aggregate([
-        {
-            $match:{
-                _id:ObjectID(req.data.user._id)
-            }
-        },
-        {
-            $addToSet: {
-                language: {$each:req.body.language}
-              }
-        },
-        {
-            $merge: {
-                into: 'users',
-                on: '_id',
-                whenMatched: 'replace',
-                whenNotMatched: 'insert'
-            }
-        }
-    ]).exec((err, result) => {
-            if (err) 
-            {
-                next(new Error(`${err.message}`, 500))
-            }else{
-            res.status(200).send({message:"language added Sucessfully"})
-            }
+    User.updateOne({email:req.data.user.email},{$addToSet:{language:req.body.language}}).exec((err, result) => {
+                if (err) 
+                {
+                    next(new Error(`${err.message}`, 500))
+                }else{
+                res.status(200).send({message:"language added Sucessfully"})
+                }
     })
 }
 
