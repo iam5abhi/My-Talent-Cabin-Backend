@@ -288,7 +288,7 @@ exports.UpdateMentorStatus =FactoryHandler.updateOne(Mentor)
 
 
 
-exports.AutomaticStatusComplete =async(req,res,next)=>{
+AutomaticStatusComplete =async(req,res,next)=>{
     const data =await Internships.updateMany({endDate:{$eq:new Date()}},{$set:{status:'complete'}})
     return data
 }
