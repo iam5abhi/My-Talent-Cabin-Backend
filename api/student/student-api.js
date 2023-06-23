@@ -8,6 +8,10 @@ const isAuthenticated =require('../../Middleware/isAuthenticated/isAuthenticated
 studentrouter.route('/signup').post(studentcontroller.signup)
 studentrouter.route('/login').post(studentcontroller.login)
 
+studentrouter.route('/login-with-otp').post(studentcontroller.loginWithOtp)
+studentrouter.route('/verify-otp').patch(studentcontroller.VerfiyWithOtp)
+studentrouter.route('/resend-otp').get(studentcontroller.ResendOtp)
+
 studentrouter.use(isAuthenticated)
 
 studentrouter.route('/change-password').patch(studentcontroller.update_password)

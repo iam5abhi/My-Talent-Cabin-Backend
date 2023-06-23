@@ -2,10 +2,14 @@ const User =require('../../Models/User/UserShema')
 const FactoryHandler =require('../../FactoryHandler/factoryhandler')
 const base64 = require("base-64");
 const mongoose =require('mongoose')
+const axios =require('axios')
 const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOGIN_SUCCESS, USER_ALREADY_EXIST } = require('../../ConstandMessage/Message')
 const createSendToken = require("../../suscribers/createSendToken");
 const SubCategory =require('../../Models/category/subcategory')
 const Intership =require('../../Models/Internship/Internship')
+
+let otp = Math.floor(1000 + Math.random() * 9000);
+
 
 
 
@@ -399,3 +403,58 @@ exports.StudentEnrollProject =(req,res,next)=>{
         }
     })
 }
+
+
+
+exports.loginWithOtp =async(req,res,next)=>{
+    const user =await User.findOne({PhoneNumber:req.body.PhoneNumber})
+    if(!user) return next(new Error('User is Not exits',500))
+    axios.get(`https://sms.innuvissolutions.com/api/mt/SendSMS?APIKey=Try50kmHFUqu0MoBnX9Ojg&senderid=EDUTEK&channel=Trans&DCS=0&flashsms=0&number=${user.PhoneNumber}&text=%20Dear%20Parent,Your%20OTP%20for%20App%20Login%20is%20${otp}%20EDUTEK&route=1014&peid=1201159350821274881`)
+    .then((response)=>{
+        res.status(200).send({
+        message:'Otp sent Sucessffuly',
+        PhoneNumber:user.PhoneNumber
+        })
+    })
+    .catch((err)=>{
+    res.status(200).send({
+        message:err.message,
+        })
+    })
+}
+
+
+
+exports.VerfiyWithOtp =async(req,res,next)=>{
+    if(otp===Number(req.body.otp)){
+        const user =await User.findOneAndUpdate({PhoneNumber:req.query.PhoneNumber},{status:"active"},{new:true})
+        if(!user) return next(new Error('User is Not update',500))
+        createSendToken(user, 200, req, res, LOGIN_SUCCESS);
+    }else{
+    return next(new Error(`Invalid Otp`),404)
+    }
+}
+
+
+
+exports.ResendOtp =(req,res,next)=>{
+    User.findOne({PhoneNumber:req.query.PhoneNumber},function(err,data){
+        if(err){
+            return next(`user is not exits${err.message}`,404)
+        }
+        axios.get(`https://sms.innuvissolutions.com/api/mt/SendSMS?APIKey=Try50kmHFUqu0MoBnX9Ojg&senderid=EDUTEK&channel=Trans&DCS=0&flashsms=0&number=${data.PhoneNumber}&text=%20Dear%20Parent,Your%20OTP%20for%20App%20Login%20is%20${otp}%20EDUTEK&route=1014&peid=1201159350821274881`)
+            .then((response)=>{
+                res.status(200).json({
+                message:`Otp Send Sucessfully`,
+                })
+            })
+            .catch((err)=>{
+            res.status(200).json({
+                message:err.message
+                })
+            })
+    })
+}
+
+
+
