@@ -7,8 +7,14 @@ const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOG
 const createSendToken = require("../../suscribers/createSendToken");
 const SubCategory =require('../../Models/category/subcategory')
 const Intership =require('../../Models/Internship/Internship')
+const stripe = require('stripe')(`${process.env.STRIPE_SECRETKEY}`)
+const Transaction =require('../../Models/Payment/StripeTransaction')
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+const PaymentDetailsWithRazorPay =require('../../Models/Payment/PaymentDetailsSchema')
 
-let otp = Math.floor(1000 + Math.random() * 9000);
+let otp;
+
 
 
 
@@ -407,6 +413,7 @@ exports.StudentEnrollProject =(req,res,next)=>{
 
 
 exports.loginWithOtp =async(req,res,next)=>{
+    otp =Math.floor(1000 + Math.random() * 9000);
     const user =await User.findOne({PhoneNumber:req.body.PhoneNumber})
     if(!user) return next(new Error('User is Not exits',500))
     axios.get(`https://sms.innuvissolutions.com/api/mt/SendSMS?APIKey=Try50kmHFUqu0MoBnX9Ojg&senderid=EDUTEK&channel=Trans&DCS=0&flashsms=0&number=${user.PhoneNumber}&text=%20Dear%20Parent,Your%20OTP%20for%20App%20Login%20is%20${otp}%20EDUTEK&route=1014&peid=1201159350821274881`)
@@ -438,6 +445,7 @@ exports.VerfiyWithOtp =async(req,res,next)=>{
 
 
 exports.ResendOtp =(req,res,next)=>{
+    otp =Math.floor(1000 + Math.random() * 9000);
     User.findOne({PhoneNumber:req.query.PhoneNumber},function(err,data){
         if(err){
             return next(`user is not exits${err.message}`,404)
@@ -458,3 +466,150 @@ exports.ResendOtp =(req,res,next)=>{
 
 
 
+exports.RazorPaymentGateway =async(req,res,next)=>{
+    const data = await Intership.findOneAndUpdate(
+        {_id:req.params.id},
+        {
+            $push:{
+                enrollStudent:{
+                    studentId:req.data.user._id,
+                    description:req.body.description
+                }
+            }
+     })
+     const instance = new Razorpay({
+        key_id: process.env.PAYMENTKEYID, // YOUR RAZORPAY KEY
+        key_secret: process.env.PAYMENTSECRETKEY, // YOUR RAZORPAY SECRET
+      });
+
+      const options = {
+        amount: data.price*100,
+        currency: 'INR',
+        receipt: 'receipt_order_74394',
+      };
+      const order = await instance.orders.create(options);
+      if (!order) return res.status(500).send('Some error occured');
+      res.status(200).send(order);
+}
+
+exports.RazorPaymentSucces =async(req,res,next)=>{
+    const {
+        orderCreationId,
+        razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature,
+      } = req.body;
+
+      const shasum = crypto.createHmac('sha256', 'PWjt5xhtC58mThjnbi453NhZ');
+      shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+      const digest = shasum.digest('hex');
+
+      if (digest !== razorpaySignature)
+      return res.status(400).json({ msg: 'Transaction not legit!' });
+
+    const newPayment =await  PaymentDetailsWithRazorPay.create({
+        razorpayDetails: {
+          orderId: razorpayOrderId,
+          paymentId: razorpayPaymentId,
+          signature: razorpaySignature,
+
+    },
+        success: true,
+      });
+      res.status(200).send({
+        msg: 'success',
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+        User:req.data.user._id,
+        Oder_id:req.body.Oder_id
+      });
+}
+
+
+
+
+exports.RazorPaymentFailure =async(req,res,next)=>{
+    const {
+        orderCreationId,
+        razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature,
+      } = req.body;
+
+      const shasum = crypto.createHmac('sha256', 'PWjt5xhtC58mThjnbi453NhZ');
+      shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+      const digest = shasum.digest('hex');
+
+      if (digest !== razorpaySignature)
+      return res.status(400).json({ msg: 'Transaction not legit!' });
+
+    const newPayment =await  PaymentDetailsWithRazorPay.create({
+        razorpayDetails: {
+          orderId: razorpayOrderId,
+          paymentId: razorpayPaymentId,
+          signature: razorpaySignature,
+        },
+        success: false,
+    });
+      res.status(200).send({
+        msg: 'success',
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+        User:req.data.user._id,
+        Oder_id:req.body.Oder_id
+      });
+}
+
+
+exports.StripePaymentGateWay=async(req,res,next)=>{
+    const data = await Intership.findOneAndUpdate(
+        {_id:req.params.id},
+        {
+            $push:{
+                enrollStudent:{
+                    studentId:req.data.user._id,
+                    description:req.body.description
+                }
+            }
+        })
+    let price =Math.round(parseInt(data.price)/82.03)
+    const session = await stripe.checkout.sessions.create({ 
+      payment_method_types: ["card"], 
+      line_items: [ 
+        { 
+          price_data: { 
+            currency: "usd", 
+            product_data: {
+                name: data.title,
+                metadata: {
+                  InternshipID: data._id,
+                  ProjectName: data.title,
+                  InternshipWeek: data.internshipWeek,
+                  InternshipType: data.internshipType,
+                  studentId: req.data.user._id,
+                  startDate: data.startDate,
+                  endDate: data.endDate
+                }
+              }, 
+            price:price*100
+          }, 
+          quantity: product.quantity, 
+        }, 
+      ], 
+      mode: "payment", 
+      customer_email:data.email,
+      success_url: "http://localhost:3000/success", 
+      cancel_url: "http://localhost:3000/cancel", 
+    }); 
+    const userTransaction =await Transaction.create({
+        Transaction_id:session.id,
+        Oder_id:req.params.id,
+        User:req.data.user._id,
+        amount:price,
+        currency:session.currency,
+        paymentMethod:session.payment_method_types,
+        status:session.payment_status
+    })
+    if(!userTransaction) return next(new Error('no data',500))
+    res.status(200).send(userTransaction)
+}

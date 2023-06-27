@@ -39,6 +39,14 @@ studentrouter.route('/internship/:id').get(studentcontroller.getOneInternship).p
 
 studentrouter.route('/project-enroll').get(studentcontroller.StudentEnrollProject)
 
+studentrouter.route('/paid-internship-with-razorpay/:id').patch(studentcontroller.RazorPaymentGateway)
+studentrouter.route('/payment/sucess').patch(studentcontroller.RazorPaymentSucces)
+studentrouter.route('/payment/cancel').patch(studentcontroller.RazorPaymentFailure)
+
+studentrouter.route('/paid-internship-with-stripe/:id').patch(studentcontroller.StripePaymentGateWay)
+
+
+
 
 
 module.exports =studentrouter

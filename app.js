@@ -10,31 +10,31 @@ const company =require('./api/comapny/company-api')
 const mentor =require('./api/mentor/mentor-api')
 
 
-const Razorpay = require('razorpay');
+// const Razorpay = require('razorpay');
 
 
-const razorpay = new Razorpay({
-  key_id:  process.env.PAYMENTKEYID,
-  key_secret: process.env.PAYMENTSECRETKEY
-});
+// const razorpay = new Razorpay({
+//   key_id:  process.env.PAYMENTKEYID,
+//   key_secret: process.env.PAYMENTSECRETKEY
+// });
 
 
 
-razorpay.orders.create(
-  {
-    amount: 50000, // Amount in paise (e.g., 50000 paise = ₹500)
-    currency: 'INR',
-    receipt: 'order_receipt',
-    payment_capture: 1
-  },
-  function (error, order) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(order);
-    }
-  }
-);
+// razorpay.orders.create(
+//   {
+//     amount: 50000, // Amount in paise (e.g., 50000 paise = ₹500)
+//     currency: 'INR',
+//     receipt: 'order_receipt',
+//     payment_capture: 1
+//   },
+//   function (error, order) {
+//     if (error) {
+//       console.error(error);
+//     } else {
+//       console.log(order);
+//     }
+//   }
+// );
 
 
 const app = express();
