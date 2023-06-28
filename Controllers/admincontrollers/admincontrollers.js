@@ -121,6 +121,9 @@ exports.AddInternships =async(req,res,next)=>{
         mentorId:req.body.mentorId,
         startDate:req.body.startDate,
         endDate:req.body.endDate,
+        number_of_opening:req.body.number_of_opening,
+        selling:req.body.selling,
+        meetingLink:req.body.meetingLink
         
     })
     if(!data) return next(new Error('no added',500))
@@ -195,7 +198,10 @@ exports.AddInternships =async(req,res,next)=>{
     intershipType:req.body.intershipType,
     price:req.body.price,
     tags:req.body.tags,
-    mentorId:req.body.mentorId
+    mentorId:req.body.mentorId,
+    number_of_opening:req.body.number_of_opening,
+    selling:req.body.selling,
+    meetingLink:req.body.meetingLink
    }
    const data =await Internships.updateOne({_id:req.params.id},{$set:updatedData})
    if(!data) return next(new Error('no added',500))

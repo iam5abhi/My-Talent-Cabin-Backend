@@ -53,6 +53,19 @@ const InternshipSchema = new mongoose.Schema(
         },
       },
     ],
+    meetingLink:{
+      type: String,
+      required: true,
+    },
+    number_of_opening: {
+      type: String,
+      required: true,
+    },
+    selling:{
+      type:String,
+      enum:['hot']
+
+    },
     startDate:{
       type:Date,
     },
