@@ -5,7 +5,6 @@ const Internship=require('../Internship/Internship')
 const TransactionSchema = new mongoose.Schema({
   Transaction_id: {
     type: String,
-    required: true,
   },
   Oder_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +16,6 @@ const TransactionSchema = new mongoose.Schema({
   },
   amount: {
     type: Number,
-    required: true,
   },
   currency: {
     type: String,
@@ -25,7 +23,6 @@ const TransactionSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    required: true,
   },
   status: {
     type: String,

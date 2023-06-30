@@ -123,10 +123,10 @@ exports.AddInternships =async(req,res,next)=>{
         tags:req.body.tags,
         mentorId:req.body.mentorId,
         startDate:req.body.startDate,
-    endtDate:req.body.endtDate,
-    number_of_opening:req.body.number_of_opening,
-    selling:req.body.selling,
-    meetingLink:req.body.meetingLink
+        endtDate:req.body.endtDate,
+        number_of_opening:req.body.number_of_opening,
+        selling:req.body.selling,
+        meetingLink:req.body.meetingLink
     })
     if(!data) return next(new Error('no added',500))
     res.status(201).send(data)

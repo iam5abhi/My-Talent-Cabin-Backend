@@ -7,7 +7,7 @@ const { REGISTRATION_SUCCESS, PASSWORD_NOT_MATCH, COMPARE_PASSWORD_USING_DB, LOG
 const createSendToken = require("../../suscribers/createSendToken");
 const SubCategory =require('../../Models/category/subcategory')
 const Intership =require('../../Models/Internship/Internship')
-const stripe = require('stripe')(`${process.env.STRIPE_SECRETKEY}`)
+const stripe = require('stripe')(`sk_test_51IEpRgFDVtL6gGatPPQvwEh6fDrM0P4JSMAjwCKtipHQUhQHfgMf0cYwIvglclj3v5M2fIzBhip5KOzJK2nzz2mu00FFZrUwSe`)
 const Transaction =require('../../Models/Payment/StripeTransaction')
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
@@ -562,6 +562,7 @@ exports.RazorPaymentFailure =async(req,res,next)=>{
 
 
 exports.StripePaymentGateWay=async(req,res,next)=>{
+    const quantity =1
     const data = await Intership.findOneAndUpdate(
         {_id:req.params.id},
         {
@@ -572,6 +573,7 @@ exports.StripePaymentGateWay=async(req,res,next)=>{
                 }
             }
         })
+
     let price =Math.round(parseInt(data.price)/82.03)
     const session = await stripe.checkout.sessions.create({ 
       payment_method_types: ["card"], 
@@ -591,25 +593,30 @@ exports.StripePaymentGateWay=async(req,res,next)=>{
                   endDate: data.endDate
                 }
               }, 
-            price:price*100
+              unit_amount:price*100
           }, 
-          quantity: product.quantity, 
+          quantity: quantity, 
         }, 
       ], 
       mode: "payment", 
-      customer_email:data.email,
-      success_url: "http://localhost:3000/success", 
-      cancel_url: "http://localhost:3000/cancel", 
+      customer_email:req.data.user.email,
+      success_url: "http://localhost:3000", 
+      cancel_url: "http://localhost:3000", 
     }); 
-    const userTransaction =await Transaction.create({
-        Transaction_id:session.id,
-        Oder_id:req.params.id,
-        User:req.data.user._id,
-        amount:price,
-        currency:session.currency,
-        paymentMethod:session.payment_method_types,
-        status:session.payment_status
-    })
-    if(!userTransaction) return next(new Error('no data',500))
-    res.status(200).send(userTransaction)
+     const userTransaction =await Transaction.create({
+         Transaction_id:session.id,
+         Oder_id:req.params.id,
+         User:req.data.user._id,
+         amount:price,
+         currency:session.currency,
+         paymentMethod:session.payment_method_types[0],
+         status:session.payment_status
+     })
+     if(!userTransaction) return next(new Error('no data',500))
+    res.status(200).send(session)
+}
+
+
+exports.StirpemyOder =async(req,res,next)=>{
+  console.log("hello")
 }
