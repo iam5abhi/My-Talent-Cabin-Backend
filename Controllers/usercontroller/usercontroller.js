@@ -295,7 +295,6 @@ exports.getAllInternship = async (req, res, next) => {
     {
       $project: {
         CompanyId: 0,
-        status: 0,
         mentorId: 0,
         updatedAt: 0,
         createdAt: 0,
@@ -486,7 +485,7 @@ exports.RazorPaymentGateway = async (req, res, next) => {
       $push: {
         enrollStudent: {
           studentId: req.data.user._id,
-          description: req.body.description,
+          projectUserdesciption: req.body.description,
         },
       },
     }
@@ -578,7 +577,7 @@ exports.StripePaymentGateWay = async (req, res, next) => {
       $push: {
         enrollStudent: {
           studentId: req.data.user._id,
-          description: req.body.description,
+          projectUserdesciption: req.body.description,
         },
       },
     }
@@ -610,8 +609,8 @@ exports.StripePaymentGateWay = async (req, res, next) => {
     ],
     mode: "payment",
     customer_email: req.data.user.email,
-    success_url: "http://localhost:3000",
-    cancel_url: "http://localhost:3000",
+    success_url: "http://localhost:3000/auth/student/payment-success",
+    cancel_url: "http://localhost:3000/auth/student/payment-failed",
   });
   const userTransaction = await Transaction.create({
     Transaction_id: session.id,
