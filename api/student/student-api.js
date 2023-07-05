@@ -1,5 +1,6 @@
 const express = require("express");
 const studentrouter = express.Router();
+const publicstudentrouter = express.Router();
 const studentcontroller =require('../../Controllers/usercontroller/usercontroller')
 const commoncontroller =require('../../common/commonControllers')
 const isAuthenticated =require('../../Middleware/isAuthenticated/isAuthenticated')
@@ -11,12 +12,14 @@ studentrouter.route('/login').post(studentcontroller.login)
 studentrouter.route('/login-with-otp').post(studentcontroller.loginWithOtp)
 studentrouter.route('/verify-otp').patch(studentcontroller.VerfiyWithOtp)
 studentrouter.route('/resend-otp').get(studentcontroller.ResendOtp)
+studentrouter.route('/:id').get(studentcontroller.getSingleprofile)
 
 studentrouter.use(isAuthenticated)
 
 studentrouter.route('/change-password').patch(studentcontroller.update_password)
 
 studentrouter.route('/').get(studentcontroller.getprofile)
+
 studentrouter.route('/skill').get(commoncontroller.getAllSubCategory)
 
 
