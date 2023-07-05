@@ -91,6 +91,43 @@ exports.getProfile =async(req,res,next)=>{
 }
 
 
+exports.getSingleProfile =async(req,res,next)=>{
+    const ObjectID = mongoose.Types.ObjectId;
+    Mentor.aggregate([
+        {
+            $match:{_id:ObjectID(req.params.id)}
+        },
+        {
+            $lookup:{
+                from:'subcategories',
+                localField:'skills',
+                foreignField:"_id",
+                as:'myskill'
+            }
+        },
+        {
+        $project:{
+            skills:0,
+                password:0,
+                confirmPassword:0,
+                isAccountVerified:0,
+                accountCreated:0,
+                status:0,
+                createdAt:0,
+                updatedAt:0
+        }
+        }
+    ]).exec((err, result) => {
+        if (err) 
+        {
+            next(new Error(`${err.message}`, 500))
+        }else{
+        res.status(200).send(result)
+        }
+   })
+}
+
+
 exports.getAllSubCategory =async(req,res,next)=>{
     const subcategory =await SubCategory.find({},{categoryId:0,status:0,createdAt:0,updatedAt:0})
     if(!subcategory) return next(new Error('no data is avaible'))
