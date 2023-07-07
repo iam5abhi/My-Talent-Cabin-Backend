@@ -12,7 +12,7 @@ const {
 } = require("../../ConstandMessage/Message");
 const createSendToken = require("../../suscribers/createSendToken");
 const SubCategory = require("../../Models/category/subcategory");
-const Intership = require("../../Models/Internship/Internship");
+const Internships = require("../../Models/Internship/Internship");
 const stripe = require("stripe")(
   `sk_test_51IEpRgFDVtL6gGatPPQvwEh6fDrM0P4JSMAjwCKtipHQUhQHfgMf0cYwIvglclj3v5M2fIzBhip5KOzJK2nzz2mu00FFZrUwSe`
 );
@@ -326,30 +326,19 @@ exports.removeExprience = async (req, res, next) => {
     });
 };
 
+
+
+
 exports.getAllInternship = async (req, res, next) => {
-  Intership.aggregate([
-    { $match: {} },
-    {
-      $project: {
-        CompanyId: 0,
-        mentorId: 0,
-        updatedAt: 0,
-        createdAt: 0,
-        tags: 0,
-      },
-    },
-  ]).exec((err, result) => {
-    if (err) {
-      next(new Error(`${err.message}`, 500));
-    } else {
-      res.status(200).send(result);
-    }
-  });
+   const data =await Internships.find({})
+
+   if(!data)return next(new Error('no data avaible',500))
+   res.status(200).send(data)
 };
 
 exports.getOneInternship = (req, res, next) => {
   const ObjectID = mongoose.Types.ObjectId;
-  Intership.aggregate([
+  Internships.aggregate([
     { $match: { _id: ObjectID(req.params.id) } },
     {
       $lookup: {
@@ -387,7 +376,7 @@ exports.getOneInternship = (req, res, next) => {
 };
 
 exports.enrollStudent = (req, res, next) => {
-  Intership.updateOne(
+  Internships.updateOne(
     { _id: req.params.id },
     {
       $push: {
@@ -407,7 +396,7 @@ exports.enrollStudent = (req, res, next) => {
 };
 
 exports.updateManyInternshipStatus = (req, res, next) => {
-  Intership.updateMany({ status: "complete" }).exec((err, result) => {
+  Internships.updateMany({ status: "complete" }).exec((err, result) => {
     if (err) {
       next(new Error(`${err.message}`, 500));
     } else {
@@ -418,7 +407,7 @@ exports.updateManyInternshipStatus = (req, res, next) => {
 
 exports.StudentEnrollProject = (req, res, next) => {
   const ObjectID = mongoose.Types.ObjectId;
-  Intership.aggregate([
+  Internships.aggregate([
     {
       $match: {
         "enrollStudent.studentId": ObjectID(req.data.user._id),
@@ -516,7 +505,7 @@ exports.ResendOtp = (req, res, next) => {
 };
 
 exports.RazorPaymentGateway = async (req, res, next) => {
-  const data = await Intership.findOneAndUpdate(
+  const data = await Internships.findOneAndUpdate(
     { _id: req.params.id },
     {
       $push: {
@@ -608,7 +597,7 @@ exports.RazorPaymentFailure = async (req, res, next) => {
 
 exports.StripePaymentGateWay = async (req, res, next) => {
   const quantity = 1;
-  const data = await Intership.findOneAndUpdate(
+  const data = await Internships.findOneAndUpdate(
     { _id: req.params.id },
     {
       $push: {

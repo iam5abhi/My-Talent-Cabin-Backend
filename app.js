@@ -10,41 +10,14 @@ const company =require('./api/comapny/company-api')
 const mentor =require('./api/mentor/mentor-api')
 
 
-// const Razorpay = require('razorpay');
-
-
-// const razorpay = new Razorpay({
-//   key_id:  process.env.PAYMENTKEYID,
-//   key_secret: process.env.PAYMENTSECRETKEY
-// });
-
-
-
-// razorpay.orders.create(
-//   {
-//     amount: 50000, // Amount in paise (e.g., 50000 paise = ₹500)
-//     currency: 'INR',
-//     receipt: 'order_receipt',
-//     payment_capture: 1
-//   },
-//   function (error, order) {
-//     if (error) {
-//       console.error(error);
-//     } else {
-//       console.log(order);
-//     }
-//   }
-// );
-
-
 const app = express();
 
 
 
 
 
-app.use(express.urlencoded({extended:true,limit:"50000kb"}))
-app.use(express.json({limit:"50000kb"}))
+app.use(express.urlencoded({extended:true,}))
+app.use(express.json({}))
 
 
 // adding morgan to log HTTP requests
