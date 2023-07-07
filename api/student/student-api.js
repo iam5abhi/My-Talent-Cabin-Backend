@@ -12,7 +12,7 @@ studentrouter.route('/login').post(studentcontroller.login)
 studentrouter.route('/login-with-otp').post(studentcontroller.loginWithOtp)
 studentrouter.route('/verify-otp').patch(studentcontroller.VerfiyWithOtp)
 studentrouter.route('/resend-otp').get(studentcontroller.ResendOtp)
-studentrouter.route('/user-profile/:id').get(isAuthenticated,studentcontroller.getSingleprofile)
+studentrouter.route('/user-profile/:id').get(studentcontroller.getSingleprofile)
 
 
 studentrouter.route('/change-password').patch(isAuthenticated,studentcontroller.update_password)
