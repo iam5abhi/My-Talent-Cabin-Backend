@@ -8,7 +8,7 @@ const commoncontroller =require('../../common/commonControllers')
 
 mentorrouter.route('/signup').post(menorcontroller.signup)
 mentorrouter.route('/login').post(menorcontroller.login)
-mentorrouter.route('/:id').get(menorcontroller.getSingleProfile)
+mentorrouter.route('view-profile/:id').get(menorcontroller.getSingleProfile)
 
 mentorrouter.use(isAuthenticated)
 
@@ -33,7 +33,7 @@ mentorrouter.route('/delete-skill').patch(menorcontroller.removeSkill)
 mentorrouter.route('/add-exp').patch(menorcontroller.addExprince)
 mentorrouter.route('/delete-exp').patch(menorcontroller.removeExprience)
 
-mentorrouter.route('me-enroll-project').get(menorcontroller.enrollProject)
+mentorrouter.route('/me-enroll-project').get(menorcontroller.enrollProject)
 
 
 
