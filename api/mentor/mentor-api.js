@@ -8,7 +8,7 @@ const commoncontroller =require('../../common/commonControllers')
 
 mentorrouter.route('/signup').post(menorcontroller.signup)
 mentorrouter.route('/login').post(menorcontroller.login)
-mentorrouter.route('view-profile/:id').get(menorcontroller.getSingleProfile)
+mentorrouter.route('/view-profile/:id').get(menorcontroller.getSingleProfile)
 
 mentorrouter.use(isAuthenticated)
 
